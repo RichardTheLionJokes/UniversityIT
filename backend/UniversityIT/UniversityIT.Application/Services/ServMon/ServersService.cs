@@ -1,4 +1,5 @@
 ﻿using UniversityIT.Core.Abstractions.ServMon.Servers;
+using UniversityIT.Core.Enums.ServMon;
 using UniversityIT.Core.Models.ServMon;
 
 namespace UniversityIT.Application.Services.ServMon

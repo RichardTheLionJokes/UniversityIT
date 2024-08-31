@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UniversityIT.Core.Abstractions.ServMon.Servers;
+using UniversityIT.Core.Enums.ServMon;
 using UniversityIT.Core.Models.ServMon;
 using UniversityIT.DataAccess.Entities.ServMon;
 
@@ -21,7 +22,7 @@ namespace UniversityIT.DataAccess.Repositories.ServMon
                 .ToListAsync();
 
             var servers = serverEntities
-                .Select(s => Server.Create(s.Id, s.Name, s.IpAddress, s.Description, s.ShortDescription, s.Activity).Value)
+                .Select(s => Server.Create(s.Id, s.Name, s.IpAddress, s.Description, s.ShortDescription, s.Activity, (ServStatus)s.CurrentStatusId).Value)
                 .ToList();
 
             return servers;
@@ -36,7 +37,8 @@ namespace UniversityIT.DataAccess.Repositories.ServMon
                 IpAddress = server.IpAddress,
                 Description = server.Description,
                 ShortDescription = server.ShortDescription,
-                Activity = server.Activity
+                Activity = server.Activity,
+                CurrentStatusId = (int)server.CurrentStatus
             };
 
             await _context.Servers.AddAsync(serverEntity);

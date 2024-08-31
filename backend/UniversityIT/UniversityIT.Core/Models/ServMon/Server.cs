@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using UniversityIT.Core.Enums.ServMon;
 
 namespace UniversityIT.Core.Models.ServMon
 {
@@ -8,7 +9,7 @@ namespace UniversityIT.Core.Models.ServMon
         public const int MAX_SHORT_DESCR_LENGTH = 250;
         public const int MAX_DESCR_LENGTH = 1000;
 
-        private Server(Guid id, string name, string ipAddress, string shortDescription, string description, bool activity) 
+        private Server(Guid id, string name, string ipAddress, string shortDescription, string description, bool activity, ServStatus currentStatus) 
         {
             Id = id;
             Name = name;
@@ -16,6 +17,7 @@ namespace UniversityIT.Core.Models.ServMon
             ShortDescription = shortDescription;
             Description = description;
             Activity = activity;
+            CurrentStatus = currentStatus;
         }
 
         public Guid Id { get; }
@@ -24,8 +26,9 @@ namespace UniversityIT.Core.Models.ServMon
         public string ShortDescription { get; } = string.Empty;
         public string Description { get; } = string.Empty;
         public bool Activity { get; }
+        public ServStatus CurrentStatus { get; }
 
-        public static Result<Server> Create(Guid id, string name, string ipAddress, string shortDescription, string description, bool activity)
+        public static Result<Server> Create(Guid id, string name, string ipAddress, string shortDescription, string description, bool activity, ServStatus currentStatus)
         {
             var error = string.Empty;
 
@@ -46,7 +49,9 @@ namespace UniversityIT.Core.Models.ServMon
                 return Result.Failure<Server>($"'{nameof(description)}' can't be longer then {MAX_DESCR_LENGTH} symbols");
             }
 
-            var server = new Server(id, name, ipAddress, shortDescription, description, activity);
+            //ServStatus currentStatus = (ServStatus)Enum.GetValues<ServStatus>().GetValue(currentStatusId);
+            //ServStatus currentStatus = (ServStatus)currentStatusId;
+            var server = new Server(id, name, ipAddress, shortDescription, description, activity, currentStatus);
 
             return Result.Success(server);
         }

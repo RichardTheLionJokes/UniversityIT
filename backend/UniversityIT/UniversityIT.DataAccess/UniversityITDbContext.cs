@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using UniversityIT.Core.Abstractions.ServMon.Servers;
 using UniversityIT.DataAccess.Configurations.Auth;
 using UniversityIT.DataAccess.Entities.Auth;
 using UniversityIT.DataAccess.Entities.ServMon;
@@ -15,6 +14,7 @@ namespace UniversityIT.DataAccess
         public DbSet<RoleEntity> Roles => Set<RoleEntity>();
         public DbSet<UserEntity> Users => Set<UserEntity>();
         public DbSet<ServerEntity> Servers => Set<ServerEntity>();
+        public DbSet<ServEventEntity> ServEvents => Set<ServEventEntity>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,8 @@ namespace UniversityIT.DataAccess
             modelBuilder.ApplyConfiguration(new RolePermissionConfiguration(authOptions.Value));
 
             modelBuilder.Seed(authOptions.Value);
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

@@ -8,5 +8,8 @@
         public string ShortDescription { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public bool Activity { get; set; }
+        public int CurrentStatusId { get; set; }
+        public ServStatusEntity? CurrentStatus { get; set; }
+        public List<ServEventEntity> ServEvents { get; set; } = [];
     }
 }

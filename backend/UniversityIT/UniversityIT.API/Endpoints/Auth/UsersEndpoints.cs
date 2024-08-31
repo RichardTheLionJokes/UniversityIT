@@ -1,9 +1,5 @@
-﻿using Microsoft.Extensions.Options;
-using UniversityIT.API.Contracts.Auth.Users;
+﻿using UniversityIT.API.Contracts.Auth.Users;
 using UniversityIT.Core.Abstractions.Auth.Users;
-using UniversityIT.Core.Enums.Auth;
-using UniversityIT.DataAccess;
-using UniversityIT.DataAccess.Entities.Auth;
 
 namespace UniversityIT.API.Endpoints.Auth
 {

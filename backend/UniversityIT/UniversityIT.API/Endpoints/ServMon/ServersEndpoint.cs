@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using UniversityIT.API.Contracts.ServMon.Servers;
 using UniversityIT.API.Extentions;
 using UniversityIT.Core.Abstractions.ServMon.Servers;
 using UniversityIT.Core.Enums.Auth;
+using UniversityIT.Core.Enums.ServMon;
 using UniversityIT.Core.Models.ServMon;
 
 namespace UniversityIT.API.Endpoints.ServMon
@@ -30,7 +30,7 @@ namespace UniversityIT.API.Endpoints.ServMon
         {
             var servers = await serversService.GetAllServers();
 
-            var response = servers.Select(s => new ServersResponse(s.Id, s.Name, s.IpAddress, s.ShortDescription, s.Description, s.Activity));
+            var response = servers.Select(s => new ServersResponse(s.Id, s.Name, s.IpAddress, s.ShortDescription, s.Description, s.Activity, s.CurrentStatus.ToString()));
 
             return Results.Ok(response);
         }
@@ -45,7 +45,8 @@ namespace UniversityIT.API.Endpoints.ServMon
             request.IpAddress,
             request.Description,
             request.ShortDescription,
-            request.Activity);
+            request.Activity,
+            ServStatus.Undefined);
 
             if (server.IsFailure)
             {

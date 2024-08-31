@@ -25,6 +25,9 @@ namespace UniversityIT.DataAccess.Configurations.ServMon
 
             builder.Property(e => e.Activity)
                 .IsRequired();
+
+            builder.HasMany(s => s.ServEvents)
+                .WithOne(se => se.Server);
         }
     }
 }

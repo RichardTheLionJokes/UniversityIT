@@ -6,5 +6,6 @@
         string IpAddress,
         string Description,
         string ShortDescription,
-        bool Activity);
+        bool Activity,
+        string CurrentStatus);
 }
