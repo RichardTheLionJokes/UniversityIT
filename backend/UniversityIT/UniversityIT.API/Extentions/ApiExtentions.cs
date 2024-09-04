@@ -15,8 +15,9 @@ namespace UniversityIT.API.Extentions
     {
         public static void AddMappedEndpoints(this IEndpointRouteBuilder app)
         {
-            app.MapServersEndpoints();
             app.MapUsersEndpoints();
+            app.MapServersEndpoints();
+            app.MapServEventsEndpoints();
         }
 
         public static void AddApiAuthentication(

@@ -60,7 +60,7 @@ namespace UniversityIT.DataAccess.Repositories.Auth
                 .AsNoTracking()
                 .FirstOrDefaultAsync(u => u.Email == email) ?? throw new Exception();
 
-            //return _mapper.Map<User>(UserEntity);
+            //return _mapper.Map<User>(userEntity);
             return User.Create(userEntity.Id, userEntity.UserName, userEntity.PasswordHash, userEntity.Email, userEntity.FullName, userEntity.Position, userEntity.PhoneNumber);
         }
 

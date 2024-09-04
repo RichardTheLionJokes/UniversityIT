@@ -28,6 +28,22 @@ namespace UniversityIT.DataAccess.Repositories.ServMon
             return servers;
         }
 
+        public async Task<Server> GetById(Guid id)
+        {
+            var serverEntity = await _context.Servers
+                .AsNoTracking()
+                .FirstOrDefaultAsync(s => s.Id == id) ?? throw new Exception();
+
+            //return _mapper.Map<Server>(serverEntity);
+            return Server.Create(
+                serverEntity.Id,
+                serverEntity.Name,
+                serverEntity.IpAddress,
+                serverEntity.Description,
+                serverEntity.ShortDescription,
+                serverEntity.Activity,
+                (ServStatus)serverEntity.CurrentStatusId).Value;
+        }
         public async Task<Guid> Create(Server server)
         {
             var serverEntity = new ServerEntity
@@ -40,18 +56,15 @@ namespace UniversityIT.DataAccess.Repositories.ServMon
                 Activity = server.Activity,
                 CurrentStatusId = (int)server.CurrentStatus
             };
-
             await _context.Servers.AddAsync(serverEntity);
             await _context.SaveChangesAsync();
-
             return serverEntity.Id;
         }
-
         public async Task<Guid> Update(Guid id, string name, string ipAddress, string shortDescription, string description, bool activity)
         {
             await _context.Servers
-                .Where(s => s.Id == id)
-                .ExecuteUpdateAsync(spc => spc
+            .Where(s => s.Id == id)
+            .ExecuteUpdateAsync(spc => spc
                     .SetProperty(s => s.Name, s => name)
                     .SetProperty(s => s.IpAddress, s => ipAddress)
                     .SetProperty(s => s.ShortDescription, s => shortDescription)
@@ -66,6 +79,16 @@ namespace UniversityIT.DataAccess.Repositories.ServMon
             await _context.Servers
                 .Where(s => s.Id == id)
                 .ExecuteDeleteAsync();
+
+            return id;
+        }
+
+        public async Task<Guid> ChangeStatus(Guid id, ServStatus status)
+        {
+            await _context.Servers
+            .Where(s => s.Id == id)
+            .ExecuteUpdateAsync(spc => spc
+                    .SetProperty(s => s.CurrentStatusId, s => (int)status));
 
             return id;
         }

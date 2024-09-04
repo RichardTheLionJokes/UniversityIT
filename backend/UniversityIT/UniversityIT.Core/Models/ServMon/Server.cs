@@ -30,7 +30,7 @@ namespace UniversityIT.Core.Models.ServMon
 
         public static Result<Server> Create(Guid id, string name, string ipAddress, string shortDescription, string description, bool activity, ServStatus currentStatus)
         {
-            var error = string.Empty;
+            //var error = string.Empty;
 
             if (string.IsNullOrEmpty(name) && string.IsNullOrEmpty(ipAddress))
             {
@@ -49,8 +49,6 @@ namespace UniversityIT.Core.Models.ServMon
                 return Result.Failure<Server>($"'{nameof(description)}' can't be longer then {MAX_DESCR_LENGTH} symbols");
             }
 
-            //ServStatus currentStatus = (ServStatus)Enum.GetValues<ServStatus>().GetValue(currentStatusId);
-            //ServStatus currentStatus = (ServStatus)currentStatusId;
             var server = new Server(id, name, ipAddress, shortDescription, description, activity, currentStatus);
 
             return Result.Success(server);

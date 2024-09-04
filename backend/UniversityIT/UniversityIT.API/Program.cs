@@ -10,6 +10,9 @@ using UniversityIT.Core.Abstractions.ServMon.Servers;
 using UniversityIT.DataAccess.Repositories.Auth;
 using UniversityIT.Core.Abstractions.Auth.Users;
 using UniversityIT.Application.Services.Auth;
+using UniversityIT.Core.Abstractions.ServMon.ServEvents;
+using UniversityIT.Application.Abstractions.Common;
+using UniversityIT.Infrastructure.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -30,14 +33,17 @@ services.AddDbContext<UniversityITDbContext>(options =>
     options.UseSqlServer(configuration.GetConnectionString(nameof(UniversityITDbContext)));
 });
 
-services.AddScoped<IServersRepository, ServersRepository>();
 services.AddScoped<IUsersRepository, UsersRepository>();
+services.AddScoped<IServersRepository, ServersRepository>();
+services.AddScoped<IServEventsRepository, ServEventsRepository>();
 
-services.AddScoped<IServersService, ServersService>();
 services.AddScoped<IUsersService, UsersService>();
+services.AddScoped<IServersService, ServersService>();
+services.AddScoped<IServEventsService, ServEventsService>();
 
 services.AddScoped<IJwtProvider, JwtProvider>();
 services.AddScoped<IPasswordHasher, PasswordHasher>();
+services.AddScoped<IPinger, Pinger>();
 
 var app = builder.Build();
 

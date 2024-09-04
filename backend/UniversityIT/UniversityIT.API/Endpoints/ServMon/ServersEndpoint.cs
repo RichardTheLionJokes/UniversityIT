@@ -23,6 +23,8 @@ namespace UniversityIT.API.Endpoints.ServMon
 
             endpoints.MapDelete("{id:guid}", DeleteServer).RequirePermissions(Permission.Delete);
 
+            endpoints.MapGet("Ping/{id:guid}", PingServerById).RequirePermissions(Permission.Create);
+
             return endpoints;
         }
 
@@ -68,6 +70,11 @@ namespace UniversityIT.API.Endpoints.ServMon
         private static async Task<IResult> DeleteServer(Guid id, IServersService serversService)
         {
             return Results.Ok(await serversService.DeleteServer(id));
+        }
+
+        private static async Task<IResult> PingServerById(Guid id, IServersService serversService)
+        {
+            return Results.Ok(await serversService.PingServerById(id));
         }
     }
 }
