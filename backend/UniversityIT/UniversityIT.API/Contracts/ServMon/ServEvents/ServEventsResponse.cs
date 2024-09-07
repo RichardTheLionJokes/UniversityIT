@@ -1,5 +1,4 @@
 ﻿using UniversityIT.API.Contracts.ServMon.Servers;
-using UniversityIT.Core.Enums.ServMon;
 
 namespace UniversityIT.API.Contracts.ServMon.ServEvents
 {

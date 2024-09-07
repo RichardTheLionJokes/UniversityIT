@@ -1,7 +1,7 @@
 ﻿using UniversityIT.Application.Abstractions.Common;
 using UniversityIT.Core.Abstractions.ServMon.Servers;
 using UniversityIT.Core.Abstractions.ServMon.ServEvents;
-using UniversityIT.Core.Enums.ServMon;
+using UniversityIT.Core.Enums.Common;
 using UniversityIT.Core.Models.ServMon;
 
 namespace UniversityIT.Application.Services.ServMon
@@ -39,12 +39,11 @@ namespace UniversityIT.Application.Services.ServMon
             return await _serversRepository.Delete(id);
         }
 
-        public async Task<bool> PingServerById(Guid id)
+        public async Task<NetStatus> PingServerById(Guid id)
         {
             Server server = await _serversRepository.GetById(id);
 
-            bool isActive = await _pinger.AddressIsAvailable(server);
-            ServStatus curStatus = isActive ? ServStatus.Available : ServStatus.NotAvailable;
+            NetStatus curStatus = await _pinger.AddressStatus(server);
 
             if (curStatus != server.CurrentStatus)
             {
@@ -52,7 +51,7 @@ namespace UniversityIT.Application.Services.ServMon
                 await _servEventsRepository.Create(id, curStatus);
             }
 
-            return isActive;
+            return curStatus;
         }
     }
 }

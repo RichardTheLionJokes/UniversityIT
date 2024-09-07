@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UniversityIT.Core.Abstractions.ServMon.ServEvents;
-using UniversityIT.Core.Enums.ServMon;
+using UniversityIT.Core.Enums.Common;
 using UniversityIT.Core.Models.ServMon;
 using UniversityIT.DataAccess.Entities.ServMon;
 
@@ -26,7 +26,7 @@ namespace UniversityIT.DataAccess.Repositories.ServMon
                 .Select(se => ServEvent.Create(
                     se.Id,
                     se.HappenedAt,
-                    (ServStatus)se.ServStatusId,
+                    (NetStatus)se.ServStatusId,
                     se.Server != null ? Server.Create(
                         se.Server.Id,
                         se.Server.Name,
@@ -34,14 +34,14 @@ namespace UniversityIT.DataAccess.Repositories.ServMon
                         se.Server.ShortDescription,
                         se.Server.Description,
                         se.Server.Activity,
-                        (ServStatus)se.Server.CurrentStatusId).Value : null)
+                        (NetStatus)se.Server.CurrentStatusId).Value : null)
                 .Value)
                 .ToList();
 
             return servEvents;
         }
 
-        public async Task<Guid> Create(Guid servId, ServStatus servStatus)
+        public async Task<Guid> Create(Guid servId, NetStatus servStatus)
         {
             var servEventEntity = new ServEventEntity
             {

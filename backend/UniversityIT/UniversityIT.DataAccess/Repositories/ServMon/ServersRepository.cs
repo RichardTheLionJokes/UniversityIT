@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UniversityIT.Core.Abstractions.ServMon.Servers;
-using UniversityIT.Core.Enums.ServMon;
+using UniversityIT.Core.Enums.Common;
 using UniversityIT.Core.Models.ServMon;
 using UniversityIT.DataAccess.Entities.ServMon;
 
@@ -22,7 +22,7 @@ namespace UniversityIT.DataAccess.Repositories.ServMon
                 .ToListAsync();
 
             var servers = serverEntities
-                .Select(s => Server.Create(s.Id, s.Name, s.IpAddress, s.Description, s.ShortDescription, s.Activity, (ServStatus)s.CurrentStatusId).Value)
+                .Select(s => Server.Create(s.Id, s.Name, s.IpAddress, s.Description, s.ShortDescription, s.Activity, (NetStatus)s.CurrentStatusId).Value)
                 .ToList();
 
             return servers;
@@ -42,7 +42,7 @@ namespace UniversityIT.DataAccess.Repositories.ServMon
                 serverEntity.Description,
                 serverEntity.ShortDescription,
                 serverEntity.Activity,
-                (ServStatus)serverEntity.CurrentStatusId).Value;
+                (NetStatus)serverEntity.CurrentStatusId).Value;
         }
         public async Task<Guid> Create(Server server)
         {
@@ -83,7 +83,7 @@ namespace UniversityIT.DataAccess.Repositories.ServMon
             return id;
         }
 
-        public async Task<Guid> ChangeStatus(Guid id, ServStatus status)
+        public async Task<Guid> ChangeStatus(Guid id, NetStatus status)
         {
             await _context.Servers
             .Where(s => s.Id == id)

@@ -1,4 +1,6 @@
-﻿namespace UniversityIT.DataAccess.Entities.ServMon
+﻿using UniversityIT.DataAccess.Entities.Common;
+
+namespace UniversityIT.DataAccess.Entities.ServMon
 {
     public class ServerEntity
     {
@@ -9,7 +11,7 @@
         public string Description { get; set; } = string.Empty;
         public bool Activity { get; set; }
         public int CurrentStatusId { get; set; }
-        public ServStatusEntity? CurrentStatus { get; set; }
+        public NetStatusEntity? CurrentStatus { get; set; }
         public List<ServEventEntity> ServEvents { get; set; } = [];
     }
 }

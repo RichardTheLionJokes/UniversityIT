@@ -3,7 +3,7 @@ using UniversityIT.API.Contracts.ServMon.Servers;
 using UniversityIT.API.Extentions;
 using UniversityIT.Core.Abstractions.ServMon.Servers;
 using UniversityIT.Core.Enums.Auth;
-using UniversityIT.Core.Enums.ServMon;
+using UniversityIT.Core.Enums.Common;
 using UniversityIT.Core.Models.ServMon;
 
 namespace UniversityIT.API.Endpoints.ServMon
@@ -32,7 +32,15 @@ namespace UniversityIT.API.Endpoints.ServMon
         {
             var servers = await serversService.GetAllServers();
 
-            var response = servers.Select(s => new ServersResponse(s.Id, s.Name, s.IpAddress, s.ShortDescription, s.Description, s.Activity, s.CurrentStatus.ToString()));
+            var response = servers
+                .Select(s => new ServersResponse(
+                    s.Id,
+                    s.Name,
+                    s.IpAddress,
+                    s.ShortDescription,
+                    s.Description,
+                    s.Activity,
+                    s.CurrentStatus.ToString()));
 
             return Results.Ok(response);
         }
@@ -42,13 +50,13 @@ namespace UniversityIT.API.Endpoints.ServMon
             IServersService serversService)
         {
             var server = Server.Create(
-            Guid.NewGuid(),
-            request.Name,
-            request.IpAddress,
-            request.Description,
-            request.ShortDescription,
-            request.Activity,
-            ServStatus.Undefined);
+                Guid.NewGuid(),
+                request.Name,
+                request.IpAddress,
+                request.Description,
+                request.ShortDescription,
+                request.Activity,
+                NetStatus.Undefined);
 
             if (server.IsFailure)
             {
@@ -62,7 +70,13 @@ namespace UniversityIT.API.Endpoints.ServMon
 
         private static async Task<IResult> UpdateServer(Guid id, [FromBody] ServersRequest request, IServersService serversService)
         {
-            var serverId = await serversService.UpdateServer(id, request.Name, request.IpAddress, request.ShortDescription, request.Description, request.Activity);
+            var serverId = await serversService.UpdateServer(
+                id,
+                request.Name,
+                request.IpAddress,
+                request.ShortDescription,
+                request.Description,
+                request.Activity);
 
             return Results.Ok(serverId);
         }
@@ -74,7 +88,8 @@ namespace UniversityIT.API.Endpoints.ServMon
 
         private static async Task<IResult> PingServerById(Guid id, IServersService serversService)
         {
-            return Results.Ok(await serversService.PingServerById(id));
+            NetStatus servStatus = await serversService.PingServerById(id);
+            return Results.Ok(servStatus.ToString());
         }
     }
 }

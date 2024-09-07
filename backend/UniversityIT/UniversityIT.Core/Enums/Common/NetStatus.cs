@@ -1,6 +1,6 @@
-﻿namespace UniversityIT.Core.Enums.ServMon
+﻿namespace UniversityIT.Core.Enums.Common
 {
-    public enum ServStatus
+    public enum NetStatus
     {
         Available = 1,
         NotAvailable = 2,

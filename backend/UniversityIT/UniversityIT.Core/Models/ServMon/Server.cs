@@ -1,5 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
-using UniversityIT.Core.Enums.ServMon;
+using UniversityIT.Core.Enums.Common;
 
 namespace UniversityIT.Core.Models.ServMon
 {
@@ -9,7 +9,7 @@ namespace UniversityIT.Core.Models.ServMon
         public const int MAX_SHORT_DESCR_LENGTH = 250;
         public const int MAX_DESCR_LENGTH = 1000;
 
-        private Server(Guid id, string name, string ipAddress, string shortDescription, string description, bool activity, ServStatus currentStatus) 
+        private Server(Guid id, string name, string ipAddress, string shortDescription, string description, bool activity, NetStatus currentStatus) 
         {
             Id = id;
             Name = name;
@@ -26,12 +26,10 @@ namespace UniversityIT.Core.Models.ServMon
         public string ShortDescription { get; } = string.Empty;
         public string Description { get; } = string.Empty;
         public bool Activity { get; }
-        public ServStatus CurrentStatus { get; }
+        public NetStatus CurrentStatus { get; }
 
-        public static Result<Server> Create(Guid id, string name, string ipAddress, string shortDescription, string description, bool activity, ServStatus currentStatus)
+        public static Result<Server> Create(Guid id, string name, string ipAddress, string shortDescription, string description, bool activity, NetStatus currentStatus)
         {
-            //var error = string.Empty;
-
             if (string.IsNullOrEmpty(name) && string.IsNullOrEmpty(ipAddress))
             {
                 return Result.Failure<Server>($"'{nameof(name)}' and '{nameof(ipAddress)}' can't be empty at the same time");

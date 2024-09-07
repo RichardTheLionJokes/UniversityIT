@@ -1,12 +1,13 @@
 ﻿using System.Net.NetworkInformation;
 using UniversityIT.Application.Abstractions.Common;
+using UniversityIT.Core.Enums.Common;
 using UniversityIT.Core.Models.ServMon;
 
 namespace UniversityIT.Infrastructure.Common
 {
     public class Pinger : IPinger
     {
-        public async Task<bool> AddressIsAvailable(Server server, int timeout)
+        public async Task<NetStatus> AddressStatus(Server server, int timeout)
         {
             try
             {
@@ -14,12 +15,12 @@ namespace UniversityIT.Infrastructure.Common
                 Ping pingSender = new();
                 PingReply reply = await pingSender.SendPingAsync(address, timeout);
 
-                if (reply.Status == IPStatus.Success) return true;
-                else return false;
+                if (reply.Status == IPStatus.Success) return NetStatus.Available;
+                else return NetStatus.NotAvailable;
             }
             catch
             {
-                return false;
+                return NetStatus.Undefined;
             }
         }
     }

@@ -1,5 +1,4 @@
 ﻿using UniversityIT.Core.Abstractions.ServMon.ServEvents;
-using UniversityIT.Core.Enums.ServMon;
 using UniversityIT.Core.Models.ServMon;
 
 namespace UniversityIT.Application.Services.ServMon
@@ -17,10 +16,5 @@ namespace UniversityIT.Application.Services.ServMon
         {
             return await _servEventsRepository.Get();
         }
-
-        //public async Task<Guid> CreateServEvent(Guid servId, ServStatus servStatus)
-        //{
-        //    return await _servEventsRepository.Create(servId, servStatus);
-        //}
     }
 }
