@@ -10,6 +10,6 @@ namespace UniversityIT.Core.Abstractions.ServMon.Servers
         Task<Guid> Create(Server server);
         Task<Guid> Update(Guid id, string name, string ipAddress, string description, string shortDescription, bool activity);
         Task<Guid> Delete(Guid id);
-        Task<Guid> ChangeStatus(Guid id, NetStatus status);
+        Task<NetStatus> ChangeStatus(Guid id, NetStatus status);
     }
 }

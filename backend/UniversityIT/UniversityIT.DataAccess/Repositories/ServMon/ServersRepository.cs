@@ -83,14 +83,14 @@ namespace UniversityIT.DataAccess.Repositories.ServMon
             return id;
         }
 
-        public async Task<Guid> ChangeStatus(Guid id, NetStatus status)
+        public async Task<NetStatus> ChangeStatus(Guid id, NetStatus status)
         {
             await _context.Servers
             .Where(s => s.Id == id)
             .ExecuteUpdateAsync(spc => spc
                     .SetProperty(s => s.CurrentStatusId, s => (int)status));
 
-            return id;
+            return status;
         }
     }
 }

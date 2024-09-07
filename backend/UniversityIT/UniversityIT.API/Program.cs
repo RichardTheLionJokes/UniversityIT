@@ -13,6 +13,7 @@ using UniversityIT.Application.Services.Auth;
 using UniversityIT.Core.Abstractions.ServMon.ServEvents;
 using UniversityIT.Application.Abstractions.Common;
 using UniversityIT.Infrastructure.Common;
+using UniversityIT.Infrastructure.Background;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -44,6 +45,8 @@ services.AddScoped<IServEventsService, ServEventsService>();
 services.AddScoped<IJwtProvider, JwtProvider>();
 services.AddScoped<IPasswordHasher, PasswordHasher>();
 services.AddScoped<IPinger, Pinger>();
+
+services.AddHostedService<ServScanner>();
 
 var app = builder.Build();
 
