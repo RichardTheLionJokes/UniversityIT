@@ -28,11 +28,11 @@ namespace UniversityIT.API.Endpoints.Auth
             IUsersService usersService,
             HttpContext context)
         {
-            var token = await usersService.Login(request.Email, request.Password);
+            var (token,user) = await usersService.Login(request.Email, request.Password);
 
             context.Response.Cookies.Append("tasty-cookies", token);
 
-            return Results.Ok();
+            return Results.Ok(user);
         }
     }
 }

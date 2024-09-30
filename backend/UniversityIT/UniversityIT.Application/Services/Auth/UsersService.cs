@@ -29,7 +29,7 @@ namespace UniversityIT.Application.Services.Auth
             await _usersRepository.Create(user);
         }
 
-        public async Task<string> Login(string email, string password)
+        public async Task<(string, User)> Login(string email, string password)
         {
             var user = await _usersRepository.GetByEmail(email);
 
@@ -42,7 +42,7 @@ namespace UniversityIT.Application.Services.Auth
 
             var token = _jwtProvider.GenerateToken(user);
 
-            return token;
+            return (token, user);
         }
     }
 }
