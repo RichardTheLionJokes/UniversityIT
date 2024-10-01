@@ -27,28 +27,23 @@ namespace UniversityIT.DataAccess.Repositories.ServMon
                     se.Id,
                     se.HappenedAt,
                     (NetStatus)se.ServStatusId,
-                    se.Server != null ? Server.Create(
-                        se.Server.Id,
-                        se.Server.Name,
-                        se.Server.IpAddress,
-                        se.Server.ShortDescription,
-                        se.Server.Description,
-                        se.Server.Activity,
-                        (NetStatus)se.Server.CurrentStatusId).Value : null)
+                    se.ServerId,
+                    se.Server?.Name,
+                    se.Server?.IpAddress)
                 .Value)
                 .ToList();
 
             return servEvents;
         }
 
-        public async Task<Guid> Create(Guid servId, NetStatus servStatus)
+        public async Task<Guid> Create(ServEvent servEvent)
         {
             var servEventEntity = new ServEventEntity
             {
-                Id = Guid.NewGuid(),
-                HappenedAt = DateTime.Now,
-                ServStatusId = (int)servStatus,
-                ServerId = servId
+                Id = servEvent.Id,
+                HappenedAt = servEvent.HappenedAt,
+                ServStatusId = (int)servEvent.ServStatus,
+                ServerId = servEvent.ServerId
             };
 
             await _context.ServEvents.AddAsync(servEventEntity);

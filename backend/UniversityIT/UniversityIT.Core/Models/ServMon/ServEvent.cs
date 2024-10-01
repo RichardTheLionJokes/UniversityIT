@@ -5,22 +5,26 @@ namespace UniversityIT.Core.Models.ServMon
 {
     public class ServEvent
     {
-        private ServEvent(Guid id, DateTime happenedAt, NetStatus servStatus, Server? server)
+        private ServEvent(Guid id, DateTime happenedAt, NetStatus servStatus, Guid serverId, string? serverName, string? serverIp)
         {
             Id = id;
             HappenedAt = happenedAt;
             ServStatus = servStatus;
-            Server = server;
+            ServerId = serverId;
+            ServerName = serverName;
+            ServerIp = serverIp;
         }
 
         public Guid Id { get; }
         public DateTime HappenedAt { get; }
         public NetStatus ServStatus { get; }
-        public Server? Server { get; }
+        public Guid ServerId { get; }
+        public string? ServerName { get; }
+        public string? ServerIp { get; }
 
-        public static Result<ServEvent> Create(Guid id, DateTime happenedAt, NetStatus servStatus, Server? server)
+        public static Result<ServEvent> Create(Guid id, DateTime happenedAt, NetStatus servStatus, Guid serverId, string? serverName, string? serverIp)
         {
-            var servEvent = new ServEvent(id, happenedAt, servStatus, server);
+            var servEvent = new ServEvent(id, happenedAt, servStatus, serverId, serverName, serverIp);
 
             return Result.Success(servEvent);
         }

@@ -48,7 +48,15 @@ namespace UniversityIT.Application.Services.ServMon
             if (curStatus != server.CurrentStatus)
             {
                 await _serversRepository.ChangeStatus(id, curStatus);
-                await _servEventsRepository.Create(id, curStatus);
+
+                var servEvent = ServEvent.Create(
+                    Guid.NewGuid(),
+                    DateTime.Now,
+                    curStatus,
+                    id,
+                    server.Name,
+                    server.IpAddress);
+                await _servEventsRepository.Create(servEvent.Value);
             }
 
             return curStatus;

@@ -6,6 +6,6 @@ namespace UniversityIT.Core.Abstractions.ServMon.ServEvents
     public interface IServEventsRepository
     {
         Task<List<ServEvent>> Get();
-        Task<Guid> Create(Guid servId, NetStatus servStatus);
+        Task<Guid> Create(ServEvent servEvent);
     }
 }

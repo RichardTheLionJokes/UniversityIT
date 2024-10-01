@@ -6,5 +6,7 @@ namespace UniversityIT.API.Contracts.ServMon.ServEvents
         Guid Id,
         DateTime HappenedAt,
         string ServStatus,
-        ServersResponse? Server);
+        Guid? ServerId,
+        string? ServerName,
+        string? ServerIp);
 }

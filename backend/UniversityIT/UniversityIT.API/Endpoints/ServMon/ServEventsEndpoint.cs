@@ -26,14 +26,9 @@ namespace UniversityIT.API.Endpoints.ServMon
                 se.Id,
                 se.HappenedAt,
                 se.ServStatus.ToString(),
-                se.Server != null ? new ServersResponse(
-                    se.Server.Id,
-                    se.Server.Name,
-                    se.Server.IpAddress,
-                    se.Server.ShortDescription,
-                    se.Server.Description,
-                    se.Server.Activity,
-                    se.Server.CurrentStatus.ToString()) : null));
+                se.ServerId,
+                se.ServerName,
+                se.ServerIp));
 
             return Results.Ok(response);
         }
