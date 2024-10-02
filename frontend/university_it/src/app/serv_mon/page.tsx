@@ -75,6 +75,7 @@ export default function ServersPage(){
 
     return(
         <div>
+            <Title>Servers</Title>
             <Button
                 type="primary"
                 style={{ marginTop: "30px"}}

@@ -1,4 +1,4 @@
-interface Props {
+type Props = {
     name: string;
     ip_address: string;
 }

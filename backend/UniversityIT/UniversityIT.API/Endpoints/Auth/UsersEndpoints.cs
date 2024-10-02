@@ -24,7 +24,7 @@ namespace UniversityIT.API.Endpoints.Auth
         }
 
         private static async Task<IResult> Login(
-            LoginUserRequest request,
+            LoginUsersRequest request,
             IUsersService usersService,
             HttpContext context)
         {
@@ -32,7 +32,9 @@ namespace UniversityIT.API.Endpoints.Auth
 
             context.Response.Cookies.Append("tasty-cookies", token);
 
-            return Results.Ok(user);
+            var response = new LoginUsersResponse(user.UserName, user.Email);
+
+            return Results.Ok(response);
         }
     }
 }

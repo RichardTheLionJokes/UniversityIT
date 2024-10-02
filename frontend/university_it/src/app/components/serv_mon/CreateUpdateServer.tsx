@@ -4,7 +4,7 @@ import TextArea from "antd/es/input/TextArea";
 import Modal from "antd/es/modal/Modal";
 import { SetStateAction, useEffect, useState } from "react";
 
-interface Props {
+type Props = {
     mode: Mode;
     values: Server;
     isModalOpen: boolean;

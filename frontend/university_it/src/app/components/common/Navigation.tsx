@@ -3,30 +3,28 @@
 import { Menu } from "antd";
 import Link from "next/link";
 import { useSession, signIn, signOut } from "next-auth/react";
-
-type NavLink = {
-    key: string
-    label: string
-    href: string
-}
+import { ItemType, MenuItemType } from "antd/es/menu/interface";
 
 type Props = {
-    navLinks: NavLink[];
+    navLinks: ItemType<MenuItemType>[];
 }
 
 const Navigation = ({ navLinks }: Props) => {
     const session = useSession();
-
     console.log(session);
 
-    const items = 
-        navLinks.map((link) => {
-            return (
-                {key: link.key, label: <Link href={link.href}>{link.label}</Link>}
-            )
-        });
+    const items: ItemType<MenuItemType>[] = [];
+    navLinks.map((link) => {
+        items.push(link);
+    })
 
-    if (session?.data) items.push({key: "profile", label: <Link href="/profile">Profile</Link>});
+    if (session?.data) {
+        items.push({key: "serv_mon", label: "Server Monitoring",
+            children: [
+                {key: "servers", label: <Link href="/serv_mon/">Servers</Link>},
+                {key: "servEvents", label: <Link href="/serv_mon/events">Events</Link>}]});
+        items.push({key: "profile", label: <Link href="/profile">Profile</Link>});
+    };
     items.push(session?.data ? (
         {key: "signout", label: <Link href="#" onClick={() => signOut({callbackUrl: "/"})}>Sign Out</Link>}
     ) : (

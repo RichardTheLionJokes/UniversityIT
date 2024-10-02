@@ -53,8 +53,8 @@ namespace UniversityIT.API.Endpoints.ServMon
                 Guid.NewGuid(),
                 request.Name,
                 request.IpAddress,
-                request.Description,
                 request.ShortDescription,
+                request.Description,
                 request.Activity,
                 NetStatus.Undefined);
 

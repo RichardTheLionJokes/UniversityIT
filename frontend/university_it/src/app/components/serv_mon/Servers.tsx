@@ -2,7 +2,7 @@ import Card from "antd/es/card/Card"
 import { ServCardTitle } from "./ServCardTitle"
 import Button from "antd/es/button/button"
 
-interface Props {
+type Props = {
     servers: Server[];
     handleOpen: (server: Server) => void;
     handleDelete: (id: string) => void;

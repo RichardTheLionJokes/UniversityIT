@@ -19,7 +19,7 @@ const SignInForm = () => {
         
         const res = await signIn("credentials", {
             email: user.email,
-            name: user.userName,
+            name: user.name,
             redirect: false
         });
 

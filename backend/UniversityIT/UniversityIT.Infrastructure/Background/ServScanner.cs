@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Hosting;
 using UniversityIT.Application.Abstractions.Common;
 using UniversityIT.Core.Abstractions.ServMon.Servers;
-using UniversityIT.Core.Enums.Common;
 
 namespace UniversityIT.Infrastructure.Background
 {
@@ -29,11 +28,7 @@ namespace UniversityIT.Infrastructure.Background
                     var servers = await _serversService.GetAllServers();
                     foreach (var server in servers)
                     {
-                        NetStatus curStatus = await _pinger.AddressStatus(server);
-                        if (curStatus != server.CurrentStatus)
-                        {
-                            await _serversService.PingServerById(server.Id);
-                        }
+                        await _serversService.PingServer(server);
                     }
                 }
                 catch

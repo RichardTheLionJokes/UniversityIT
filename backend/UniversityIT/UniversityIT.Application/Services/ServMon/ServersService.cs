@@ -39,25 +39,32 @@ namespace UniversityIT.Application.Services.ServMon
             return await _serversRepository.Delete(id);
         }
 
-        public async Task<NetStatus> PingServerById(Guid id)
+        public async Task<NetStatus> PingServer(Server server)
         {
-            Server server = await _serversRepository.GetById(id);
-
             NetStatus curStatus = await _pinger.AddressStatus(server);
 
             if (curStatus != server.CurrentStatus)
             {
-                await _serversRepository.ChangeStatus(id, curStatus);
+                await _serversRepository.ChangeStatus(server.Id, curStatus);
 
                 var servEvent = ServEvent.Create(
                     Guid.NewGuid(),
                     DateTime.Now,
                     curStatus,
-                    id,
+                    server.Id,
                     server.Name,
                     server.IpAddress);
                 await _servEventsRepository.Create(servEvent.Value);
             }
+
+            return curStatus;
+        }
+
+        public async Task<NetStatus> PingServerById(Guid id)
+        {
+            Server server = await _serversRepository.GetById(id);
+
+            NetStatus curStatus = await PingServer(server);
 
             return curStatus;
         }

@@ -2,7 +2,7 @@
 
 namespace UniversityIT.API.Contracts.Auth.Users
 {
-    public record LoginUserRequest(
+    public record LoginUsersRequest(
         [Required] string Email,
         [Required] string Password);
 }

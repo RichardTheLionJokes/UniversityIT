@@ -2,11 +2,11 @@ import Layout, { Content, Footer, Header } from "antd/es/layout/layout";
 import "./globals.css";
 import { Providers } from "./components/auth/Providers";
 import { Navigation } from "./components/common/Navigation";
+import Link from "next/link";
 
 const menuLinks = [
-  {key: "home", label: "Home", href: "/"},
-  {key: "servers", label: "Servers", href: "/serv_mon"}
-]
+  {key: "home", label: <Link href="/">Home</Link>},           
+];
 
 export default function RootLayout({
   children,
