@@ -4,6 +4,8 @@ type Props = {
 }
 
 export const ServCardTitle = ({name, ip_address}: Props) => {
+    const sep = (name != "" && ip_address != "") ? <p>|</p> : "";
+
     return (
         <div style={{
             display: "flex",
@@ -12,7 +14,8 @@ export const ServCardTitle = ({name, ip_address}: Props) => {
             justifyContent: "space-between"
         }}>
             <p className="card__title">{name}</p>
-            <p className="card__price">{ip_address}</p>
+            {sep}            
+            <p className="card__ip">{ip_address}</p>
         </div>
     )
 }

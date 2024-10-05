@@ -1,4 +1,5 @@
 import { ServerRequest } from "@/app/services/serv_mon/servers";
+import Checkbox from "antd/es/checkbox/Checkbox";
 import Input from "antd/es/input/Input";
 import TextArea from "antd/es/input/TextArea";
 import Modal from "antd/es/modal/Modal";
@@ -81,11 +82,13 @@ export const CreateUpdateServer = ({
                     autoSize={{ minRows: 3, maxRows: 3 }}
                     placeholder = "Description"
                 />
-                <Input
-                    type="checkbox"
+                <h3>Status: {values.currentStatus}</h3>
+                <Checkbox
                     checked={activity}
                     onChange={(e: { target: { checked: boolean | ((prevState: boolean) => boolean); }; }) => setActivity(e.target.checked)}
-                />
+                >
+                    Activity
+                </Checkbox>
             </div>
         </Modal>
     )

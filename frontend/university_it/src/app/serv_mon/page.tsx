@@ -13,7 +13,8 @@ export default function ServersPage(){
         ipAddress: "",
         shortDescription: "",
         description: "",
-        activity: false
+        activity: false,
+        currentStatus: ""
     } as Server;
 
     const [values, setValues] = useState<Server>(defaultValues);
@@ -43,6 +44,14 @@ export default function ServersPage(){
 
     const handleUpdateServer = async (id: string, request: ServerRequest) => {
         await updateServer(id, request);
+        closeModal();
+
+        const servers = await getAllServers();
+        setServers(servers);
+    };
+
+    const handlePingServer = async (id: string) => {
+        await pingServer(id);
         closeModal();
 
         const servers = await getAllServers();
@@ -89,7 +98,7 @@ export default function ServersPage(){
                 mode={mode}
                 values={values}
                 isModalOpen={isModalOpen}
-                handleCreate={handleCreateServer}
+                handleCreate={handleCreateServer}                
                 handleUpdate={handleUpdateServer}
                 handleCancel={closeModal}
             />
@@ -100,6 +109,7 @@ export default function ServersPage(){
                 <Servers
                     servers={servers}
                     handleOpen={openEditModal}
+                    handlePing={handlePingServer}
                     handleDelete={handleDeleteServer}
                 />
             )}

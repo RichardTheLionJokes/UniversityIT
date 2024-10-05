@@ -48,7 +48,7 @@ export const deleteServer = async (id: string) => {
 }
 
 export const pingServer = async (id: string) => {
-    await fetch(process.env.NEXT_PUBLIC_API_URL+`Servers/Ping${id}`, {
+    await fetch(process.env.NEXT_PUBLIC_API_URL+`Servers/Ping/${id}`, {
         credentials: "include",
         mode: "cors"
     });

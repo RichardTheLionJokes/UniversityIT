@@ -5,4 +5,5 @@ interface Server {
     shortDescription: string;
     description: string;
     activity: boolean;
+    currentStatus: string;
 }

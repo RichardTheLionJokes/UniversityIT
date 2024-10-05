@@ -12,7 +12,20 @@
   gap: 30px 20px;
 }
 
-.card__price {
+.card__title {
+  margin-right: 20px;
+  max-width: 80%;
+  white-space: normal;
+}
+
+.card__ip {
+  margin-left: 20px;
+  max-width: 80%;
+  white-space: normal;
+}
+
+.card__ip2 {
+  margin-left: 20px;
   font-size: 20px;
   line-height: 26px;
   font-weight: 600;
@@ -29,12 +42,6 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-}
-
-.card__title {
-  margin-right: 20px;
-  max-width: 80%;
-  white-space: normal;
 }
 
 .stack {
