@@ -2,7 +2,7 @@
 
 namespace UniversityIT.API.Contracts.Auth.Users
 {
-    public record RegisterUsersRequest(
+    public record UsersRequest(
         [Required] string UserName,
         [Required] string Email,
         string FullName = "",

@@ -3,7 +3,7 @@ type Props = {
     ip_address: string;
 }
 
-export const ServCardTitle = ({name, ip_address}: Props) => {
+export const ServCardTitle = ({ name, ip_address }: Props) => {
     const sep = (name != "" && ip_address != "") ? <p>|</p> : "";
 
     return (

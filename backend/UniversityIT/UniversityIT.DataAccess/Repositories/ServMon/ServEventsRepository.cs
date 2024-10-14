@@ -15,6 +15,22 @@ namespace UniversityIT.DataAccess.Repositories.ServMon
             _context = context;
         }
 
+        public async Task<Guid> Create(ServEvent servEvent)
+        {
+            var servEventEntity = new ServEventEntity
+            {
+                Id = servEvent.Id,
+                HappenedAt = servEvent.HappenedAt,
+                ServStatusId = (int)servEvent.ServStatus,
+                ServerId = servEvent.ServerId
+            };
+
+            await _context.ServEvents.AddAsync(servEventEntity);
+            await _context.SaveChangesAsync();
+
+            return servEventEntity.Id;
+        }
+
         public async Task<List<ServEvent>> Get()
         {
             var servEventEntities = await _context.ServEvents
@@ -34,22 +50,6 @@ namespace UniversityIT.DataAccess.Repositories.ServMon
                 .ToList();
 
             return servEvents;
-        }
-
-        public async Task<Guid> Create(ServEvent servEvent)
-        {
-            var servEventEntity = new ServEventEntity
-            {
-                Id = servEvent.Id,
-                HappenedAt = servEvent.HappenedAt,
-                ServStatusId = (int)servEvent.ServStatus,
-                ServerId = servEvent.ServerId
-            };
-
-            await _context.ServEvents.AddAsync(servEventEntity);
-            await _context.SaveChangesAsync();
-
-            return servEventEntity.Id;
         }
     }
 }

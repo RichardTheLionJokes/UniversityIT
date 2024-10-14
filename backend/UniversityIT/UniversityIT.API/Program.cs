@@ -20,6 +20,7 @@ var services = builder.Services;
 var configuration = builder.Configuration;
 
 configuration.AddJsonFile("settings.json", false, true);
+services.Configure<EMailOptions>(configuration.GetSection("UniversityIT").GetSection(nameof(EMailOptions)));
 services.Configure<JwtOptions>(configuration.GetSection("UniversityIT").GetSection(nameof(JwtOptions)));
 services.Configure<AuthorizationOptions>(configuration.GetSection("UniversityIT").GetSection(nameof(AuthorizationOptions)));
 
@@ -44,6 +45,8 @@ services.AddScoped<IServEventsService, ServEventsService>();
 
 services.AddScoped<IJwtProvider, JwtProvider>();
 services.AddScoped<IPasswordHasher, PasswordHasher>();
+services.AddScoped<IPasswordGenerator, PasswordGenerator>();
+services.AddScoped<IMessageService, EmailService>();
 services.AddScoped<IPinger, Pinger>();
 
 services.AddHostedService<ServScanner>();

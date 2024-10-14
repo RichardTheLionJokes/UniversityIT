@@ -15,6 +15,24 @@ namespace UniversityIT.DataAccess.Repositories.ServMon
             _context = context;
         }
 
+        public async Task<Guid> Create(Server server)
+        {
+            var serverEntity = new ServerEntity
+            {
+                Id = server.Id,
+                Name = server.Name,
+                IpAddress = server.IpAddress,
+                Description = server.Description,
+                ShortDescription = server.ShortDescription,
+                Activity = server.Activity,
+                CurrentStatusId = (int)server.CurrentStatus
+            };
+            await _context.Servers.AddAsync(serverEntity);
+            await _context.SaveChangesAsync();
+
+            return serverEntity.Id;
+        }
+
         public async Task<List<Server>> Get()
         {
             var serverEntities = await _context.Servers
@@ -34,7 +52,6 @@ namespace UniversityIT.DataAccess.Repositories.ServMon
                 .AsNoTracking()
                 .FirstOrDefaultAsync(s => s.Id == id) ?? throw new Exception();
 
-            //return _mapper.Map<Server>(serverEntity);
             return Server.Create(
                 serverEntity.Id,
                 serverEntity.Name,
@@ -44,22 +61,7 @@ namespace UniversityIT.DataAccess.Repositories.ServMon
                 serverEntity.Activity,
                 (NetStatus)serverEntity.CurrentStatusId).Value;
         }
-        public async Task<Guid> Create(Server server)
-        {
-            var serverEntity = new ServerEntity
-            {
-                Id = server.Id,
-                Name = server.Name,
-                IpAddress = server.IpAddress,
-                Description = server.Description,
-                ShortDescription = server.ShortDescription,
-                Activity = server.Activity,
-                CurrentStatusId = (int)server.CurrentStatus
-            };
-            await _context.Servers.AddAsync(serverEntity);
-            await _context.SaveChangesAsync();
-            return serverEntity.Id;
-        }
+
         public async Task<Guid> Update(Guid id, string name, string ipAddress, string shortDescription, string description, bool activity)
         {
             await _context.Servers

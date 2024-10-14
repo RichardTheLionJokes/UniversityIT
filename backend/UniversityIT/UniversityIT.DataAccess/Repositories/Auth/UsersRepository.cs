@@ -9,12 +9,10 @@ namespace UniversityIT.DataAccess.Repositories.Auth
     public class UsersRepository : IUsersRepository
     {
         private readonly UniversityITDbContext _context;
-        //private readonly IMapper _mapper;
 
         public UsersRepository(UniversityITDbContext context)
         {
             _context = context;
-            //_mapper = mapper;
         }
 
         public async Task Create(User user)
@@ -39,19 +37,20 @@ namespace UniversityIT.DataAccess.Repositories.Auth
             await _context.SaveChangesAsync();
         }
 
-        public async Task<Guid> Update(Guid id, string userName, string passwordHash, string email, string fullName, string position, string phoneNumber)
+        public async Task<User> GetById(Guid id)
         {
-            await _context.Users
-                .Where(u => u.Id == id)
-                .ExecuteUpdateAsync(spc => spc
-                    .SetProperty(u => u.UserName, u => userName)
-                    .SetProperty(u => u.PasswordHash, u => passwordHash)
-                    .SetProperty(u => u.Email, u => email)
-                    .SetProperty(u => u.FullName, u => fullName)
-                    .SetProperty(u => u.Position, u => position)
-                    .SetProperty(u => u.PhoneNumber, u => phoneNumber));
+            var userEntity = await _context.Users
+                .AsNoTracking()
+                .FirstOrDefaultAsync(u => u.Id == id) ?? throw new Exception();
 
-            return id;
+            return User.Create(
+                userEntity.Id,
+                userEntity.UserName,
+                userEntity.PasswordHash,
+                userEntity.Email,
+                userEntity.FullName,
+                userEntity.Position,
+                userEntity.PhoneNumber);
         }
 
         public async Task<User> GetByEmail(string email)
@@ -60,8 +59,14 @@ namespace UniversityIT.DataAccess.Repositories.Auth
                 .AsNoTracking()
                 .FirstOrDefaultAsync(u => u.Email == email) ?? throw new Exception();
 
-            //return _mapper.Map<User>(userEntity);
-            return User.Create(userEntity.Id, userEntity.UserName, userEntity.PasswordHash, userEntity.Email, userEntity.FullName, userEntity.Position, userEntity.PhoneNumber);
+            return User.Create(
+                userEntity.Id,
+                userEntity.UserName,
+                userEntity.PasswordHash,
+                userEntity.Email,
+                userEntity.FullName,
+                userEntity.Position,
+                userEntity.PhoneNumber);
         }
 
         public async Task<HashSet<Permission>> GetUserPermissions(Guid userId)
@@ -79,6 +84,35 @@ namespace UniversityIT.DataAccess.Repositories.Auth
                 .SelectMany(r => r.Permissions)
                 .Select(p => (Permission)p.Id)
                 .ToHashSet();
+        }
+
+        public async Task<Guid> Update(Guid id, string userName, string email, string fullName, string position, string phoneNumber)
+        {
+            await _context.Users
+                .Where(u => u.Id == id)
+                .ExecuteUpdateAsync(spc => spc
+                    .SetProperty(u => u.UserName, u => userName)
+                    .SetProperty(u => u.Email, u => email)
+                    .SetProperty(u => u.FullName, u => fullName)
+                    .SetProperty(u => u.Position, u => position)
+                    .SetProperty(u => u.PhoneNumber, u => phoneNumber));
+
+            return id;
+        }
+
+        public async Task ChangePassword(string email, string passwordHash)
+        {
+            await _context.Users
+                .Where(u => u.Email == email)
+                .ExecuteUpdateAsync(spc => spc
+                    .SetProperty(u => u.PasswordHash, u => passwordHash));
+        }
+
+        public async Task<bool> UserExists(string email)
+        {
+            return await _context.Users
+                .AsNoTracking()
+                .AnyAsync(u => u.Email == email);
         }
     }
 }

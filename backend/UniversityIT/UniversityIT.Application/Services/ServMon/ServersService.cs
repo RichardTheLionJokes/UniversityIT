@@ -19,14 +19,14 @@ namespace UniversityIT.Application.Services.ServMon
             _pinger = pinger;
         }
 
-        public async Task<List<Server>> GetAllServers()
-        {
-            return await _serversRepository.Get();
-        }
-
         public async Task<Guid> CreateServer(Server server)
         {
             return await _serversRepository.Create(server);
+        }
+
+        public async Task<List<Server>> GetAllServers()
+        {
+            return await _serversRepository.Get();
         }
 
         public async Task<Guid> UpdateServer(Guid id, string name, string ipAddress, string shortDescription, string description, bool activity)

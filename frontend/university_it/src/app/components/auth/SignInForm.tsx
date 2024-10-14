@@ -1,9 +1,15 @@
 "use client"
 
-import { signIn } from "next-auth/react"
-import { useRouter, useSearchParams } from "next/navigation"
-import type { FormEventHandler } from "react"
-import { Login } from "@/app/services/auth/auth";
+import { signIn } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { login } from "@/app/services/auth/auth";
+import { LockOutlined, MailOutlined } from '@ant-design/icons';
+import { Button, Form, FormProps, Input } from "antd";
+
+type FieldType = {
+    email: string;
+    password: string;
+}
 
 const SignInForm = () => {
     const router = useRouter();
@@ -11,12 +17,9 @@ const SignInForm = () => {
     const searchParams = useSearchParams();
     const callbackUrl = searchParams?.get("callbackUrl") || "/profile";
 
-    const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
-        event.preventDefault();
+    const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
+        const user = await login(values.email, values.password);
 
-        const formData = new FormData(event.currentTarget);
-        const user = await Login(formData.get("email") as string, formData.get("password") as string);
-        
         const res = await signIn("credentials", {
             email: user.email,
             name: user.name,
@@ -28,14 +31,39 @@ const SignInForm = () => {
         } else {
             console.log(res);
         }
-    }
+    };
 
     return (
-        <form onSubmit={handleSubmit} className="login-form">
-            <input type="email" name="email" required />
-            <input type="password" name="password" required />
-            <button type="submit">Sign In</button>
-        </form>
+        <Form
+            name="login"
+            style={{ maxWidth: 600 }}
+            onFinish={onFinish}
+        >
+            <Form.Item
+                name="email"
+                rules={[
+                    { type: "email", message: "The input is not valid E-mail!" },
+                    { required: true, message: "Please input your email!" }
+                ]}
+            >
+                <Input prefix={<MailOutlined />} placeholder="Email" />
+            </Form.Item>
+            <Form.Item
+                name="password"
+                rules={[{ required: true, message: "Please input your password!" }]}
+            >
+                <Input.Password prefix={<LockOutlined />} placeholder="Password" />
+            </Form.Item>
+            <Form.Item>
+                <Button block type="primary" htmlType="submit">
+                    Sign in
+                </Button>
+                or <a href="/signin/register">Register now!</a>
+            </Form.Item>
+            <Form.Item>
+                <a href="/signin/reset_pass">Forgot your password?</a>
+            </Form.Item>
+        </Form>
     )
 }
 

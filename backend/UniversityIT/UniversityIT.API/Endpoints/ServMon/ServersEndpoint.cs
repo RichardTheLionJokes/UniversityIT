@@ -12,7 +12,7 @@ namespace UniversityIT.API.Endpoints.ServMon
     {
         public static IEndpointRouteBuilder MapServersEndpoints(this IEndpointRouteBuilder app)
         {
-            var endpoints = app.MapGroup("Servers")
+            var endpoints = app.MapGroup("servers")
                 .RequireAuthorization();
 
             endpoints.MapPost(string.Empty, CreateServer).RequirePermissions(Permission.Create);
@@ -23,26 +23,9 @@ namespace UniversityIT.API.Endpoints.ServMon
 
             endpoints.MapDelete("{id:guid}", DeleteServer).RequirePermissions(Permission.Delete);
 
-            endpoints.MapGet("Ping/{id:guid}", PingServerById).RequirePermissions(Permission.Create);
+            endpoints.MapGet("ping/{id:guid}", PingServerById).RequirePermissions(Permission.Read);
 
             return endpoints;
-        }
-
-        private static async Task<IResult> GetServers(IServersService serversService)
-        {
-            var servers = await serversService.GetAllServers();
-
-            var response = servers
-                .Select(s => new ServersResponse(
-                    s.Id,
-                    s.Name,
-                    s.IpAddress,
-                    s.ShortDescription,
-                    s.Description,
-                    s.Activity,
-                    s.CurrentStatus.ToString()));
-
-            return Results.Ok(response);
         }
 
         private static async Task<IResult> CreateServer(
@@ -66,6 +49,23 @@ namespace UniversityIT.API.Endpoints.ServMon
             var serverId = await serversService.CreateServer(server.Value);
 
             return Results.Ok(serverId);
+        }
+
+        private static async Task<IResult> GetServers(IServersService serversService)
+        {
+            var servers = await serversService.GetAllServers();
+
+            var response = servers
+                .Select(s => new ServersResponse(
+                    s.Id,
+                    s.Name,
+                    s.IpAddress,
+                    s.ShortDescription,
+                    s.Description,
+                    s.Activity,
+                    s.CurrentStatus.ToString()));
+
+            return Results.Ok(response);
         }
 
         private static async Task<IResult> UpdateServer(Guid id, [FromBody] ServersRequest request, IServersService serversService)

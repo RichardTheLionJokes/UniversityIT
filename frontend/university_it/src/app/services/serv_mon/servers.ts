@@ -8,6 +8,7 @@ export interface ServerRequest {
 
 export const getAllServers = async () => {
     const response = await fetch(process.env.NEXT_PUBLIC_API_URL+"Servers", {
+        method: "GET",
         credentials: "include",
         mode: "cors"
     });
@@ -16,7 +17,7 @@ export const getAllServers = async () => {
 }
 
 export const createServer = async (serverRequest: ServerRequest) => {
-    await fetch(process.env.NEXT_PUBLIC_API_URL+"Servers", {
+    await fetch(process.env.NEXT_PUBLIC_API_URL+"servers", {
         method: "POST",
         headers: {
             "content-type": "application/json"
@@ -28,7 +29,7 @@ export const createServer = async (serverRequest: ServerRequest) => {
 }
 
 export const updateServer = async (id: string, serverRequest: ServerRequest) => {
-    await fetch(process.env.NEXT_PUBLIC_API_URL+`Servers/${id}`, {
+    await fetch(process.env.NEXT_PUBLIC_API_URL+`servers/${id}`, {
         method: "PUT",
         headers: {
             "content-type": "application/json"
@@ -40,7 +41,7 @@ export const updateServer = async (id: string, serverRequest: ServerRequest) => 
 }
 
 export const deleteServer = async (id: string) => {
-    await fetch(process.env.NEXT_PUBLIC_API_URL+`Servers/${id}`, {
+    await fetch(process.env.NEXT_PUBLIC_API_URL+`servers/${id}`, {
         method: "DELETE",
         credentials: "include",
         mode: "cors"
@@ -48,7 +49,8 @@ export const deleteServer = async (id: string) => {
 }
 
 export const pingServer = async (id: string) => {
-    await fetch(process.env.NEXT_PUBLIC_API_URL+`Servers/Ping/${id}`, {
+    await fetch(process.env.NEXT_PUBLIC_API_URL+`servers/ping/${id}`, {
+        method: "GET",
         credentials: "include",
         mode: "cors"
     });
