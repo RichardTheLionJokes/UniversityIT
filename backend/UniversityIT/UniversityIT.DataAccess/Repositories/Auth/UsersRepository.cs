@@ -50,7 +50,7 @@ namespace UniversityIT.DataAccess.Repositories.Auth
                 userEntity.Email,
                 userEntity.FullName,
                 userEntity.Position,
-                userEntity.PhoneNumber);
+                userEntity.PhoneNumber).Value;
         }
 
         public async Task<User> GetByEmail(string email)
@@ -66,7 +66,7 @@ namespace UniversityIT.DataAccess.Repositories.Auth
                 userEntity.Email,
                 userEntity.FullName,
                 userEntity.Position,
-                userEntity.PhoneNumber);
+                userEntity.PhoneNumber).Value;
         }
 
         public async Task<HashSet<Permission>> GetUserPermissions(Guid userId)

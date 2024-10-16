@@ -1,4 +1,6 @@
-﻿namespace UniversityIT.Core.Models.Auth
+﻿using CSharpFunctionalExtensions;
+
+namespace UniversityIT.Core.Models.Auth
 {
     public class User
     {
@@ -20,9 +22,11 @@
         public string Position { get; set; }
         public string PhoneNumber { get; set; }
 
-        public static User Create(Guid id, string userName, string passwordHash, string email, string fullName, string position, string phoneNumber)
+        public static Result<User> Create(Guid id, string userName, string passwordHash, string email, string fullName, string position, string phoneNumber)
         {
-            return new User(id, userName, passwordHash, email, fullName, position, phoneNumber);
+            var user = new User(id, userName, passwordHash, email, fullName, position, phoneNumber);
+
+            return Result.Success(user);
         }
     }
 }

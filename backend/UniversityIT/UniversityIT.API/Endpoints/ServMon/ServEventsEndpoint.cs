@@ -1,5 +1,4 @@
-﻿using UniversityIT.API.Contracts.ServMon.Servers;
-using UniversityIT.API.Contracts.ServMon.ServEvents;
+﻿using UniversityIT.API.Contracts.ServMon.ServEvents;
 using UniversityIT.API.Extentions;
 using UniversityIT.Core.Abstractions.ServMon.ServEvents;
 using UniversityIT.Core.Enums.Auth;
@@ -10,7 +9,7 @@ namespace UniversityIT.API.Endpoints.ServMon
     {
         public static IEndpointRouteBuilder MapServEventsEndpoints(this IEndpointRouteBuilder app)
         {
-            var endpoints = app.MapGroup("ServEvents")
+            var endpoints = app.MapGroup("servEvents")
                 .RequireAuthorization();
 
             endpoints.MapGet(string.Empty, GetServEvents).RequirePermissions(Permission.Read);

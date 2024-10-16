@@ -29,10 +29,14 @@ const Navigation = ({ navLinks }: Props) => {
             children: [
                 {key: "servers", label: <Link href="/servers/">Servers</Link>},
                 {key: "servEvents", label: <Link href="/servers/events">Events</Link>}]});
-        items.push({key: "profile", label: <Link href="/profile">Profile</Link>});
     };
     items.push(session?.data ? (
-        {key: "signout", label: <Link href="#" onClick={() => SignOut()}>Sign Out</Link>}
+        {key: "profile1", label: session.data.user?.name,
+            children: [
+                {key: "profile", label: <Link href="/profile">Profile</Link>},
+                {key: "signout", label: <Link href="#" onClick={() => SignOut()}>Sign Out</Link>}
+            ]
+        }
     ) : (
         {key: "signin", label: <Link href="/signin">Sign In</Link>}
     ));

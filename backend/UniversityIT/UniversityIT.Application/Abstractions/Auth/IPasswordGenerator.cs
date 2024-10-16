@@ -2,6 +2,7 @@
 {
     public interface IPasswordGenerator
     {
-        string Generate(int lenght);
+        string Generate(int length = 0);
+        bool PasswordIsCorrect(string password);
     }
 }

@@ -23,6 +23,7 @@ configuration.AddJsonFile("settings.json", false, true);
 services.Configure<EMailOptions>(configuration.GetSection("UniversityIT").GetSection(nameof(EMailOptions)));
 services.Configure<JwtOptions>(configuration.GetSection("UniversityIT").GetSection(nameof(JwtOptions)));
 services.Configure<AuthorizationOptions>(configuration.GetSection("UniversityIT").GetSection(nameof(AuthorizationOptions)));
+services.Configure<PasswordPolicyOptions>(configuration.GetSection("UniversityIT").GetSection(nameof(PasswordPolicyOptions)));
 
 services.AddApiAuthentication(configuration);
 

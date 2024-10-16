@@ -1,7 +1,6 @@
 ﻿using UniversityIT.Application.Abstractions.Auth;
 using UniversityIT.Application.Abstractions.Common;
 using UniversityIT.Core.Abstractions.Auth.Users;
-using UniversityIT.Core.Abstractions.ServMon.Servers;
 using UniversityIT.Core.Models.Auth;
 
 namespace UniversityIT.Application.Services.Auth
@@ -34,12 +33,12 @@ namespace UniversityIT.Application.Services.Auth
 
             if (!userExists)
             {
-                var password = _passwordGenerator.Generate(9);
+                var password = _passwordGenerator.Generate();
                 var hashedPassword = _passwordHasher.Generate(password);
 
                 var user = User.Create(Guid.NewGuid(), userName, hashedPassword, email, fullName, position, phoneNumber);
 
-                await _usersRepository.Create(user);
+                await _usersRepository.Create(user.Value);
 
                 string message = $"You new password is {password}";
                 string subject = $"Password for {email}";
@@ -89,6 +88,11 @@ namespace UniversityIT.Application.Services.Auth
                 throw new Exception("Incorrect old password");
             }
 
+            if (!_passwordGenerator.PasswordIsCorrect(newPassword))
+            {
+                throw new Exception("Incorrect new password");
+            }
+
             var hashedPassword = _passwordHasher.Generate(newPassword);
 
             await _usersRepository.ChangePassword(email, hashedPassword);
@@ -100,7 +104,7 @@ namespace UniversityIT.Application.Services.Auth
 
             if (userExists)
             {
-                var password = _passwordGenerator.Generate(9);
+                var password = _passwordGenerator.Generate();
                 var hashedPassword = _passwordHasher.Generate(password);
 
                 await _usersRepository.ChangePassword(email, hashedPassword);
