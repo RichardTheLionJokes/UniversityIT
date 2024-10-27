@@ -54,6 +54,7 @@ namespace UniversityIT.Application.Services.ServMon
                     server.Id,
                     server.Name,
                     server.IpAddress);
+
                 await _servEventsRepository.Create(servEvent.Value);
             }
 

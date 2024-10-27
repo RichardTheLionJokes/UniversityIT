@@ -27,6 +27,7 @@ namespace UniversityIT.DataAccess.Repositories.ServMon
                 Activity = server.Activity,
                 CurrentStatusId = (int)server.CurrentStatus
             };
+
             await _context.Servers.AddAsync(serverEntity);
             await _context.SaveChangesAsync();
 

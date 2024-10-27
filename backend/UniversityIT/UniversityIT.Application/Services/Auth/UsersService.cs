@@ -114,5 +114,12 @@ namespace UniversityIT.Application.Services.Auth
                 await _messageService.SendMessage(email, subject, message);
             }
         }
+
+        public Guid GetIdByToken(string token)
+        {
+            Guid userId = _jwtProvider.GetUserIdByToken(token);
+
+            return userId;
+        }
     }
 }

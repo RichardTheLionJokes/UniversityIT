@@ -5,7 +5,7 @@ import { getAllServEvents } from "@/app/services/serv_mon/servEvents";
 import Title from "antd/es/typography/Title";
 import { useEffect, useState } from "react";
 
-export default function ServEventsPage(){
+export default function ServEventsPage() {
     const [servEvents, setServEvents] = useState<ServEvent[]>([]);
     const [loading, setLoading] = useState(true);
 

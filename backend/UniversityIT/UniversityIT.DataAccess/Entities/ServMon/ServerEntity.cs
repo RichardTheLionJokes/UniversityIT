@@ -12,6 +12,6 @@ namespace UniversityIT.DataAccess.Entities.ServMon
         public bool Activity { get; set; }
         public int CurrentStatusId { get; set; }
         public NetStatusEntity? CurrentStatus { get; set; }
-        public List<ServEventEntity> ServEvents { get; set; } = [];
+        public ICollection<ServEventEntity> ServEvents { get; set; } = [];
     }
 }

@@ -31,5 +31,19 @@ namespace UniversityIT.Infrastructure.Auth
 
             return tokenValue;
         }
+
+        public Guid GetUserIdByToken(string token)
+        {
+            JwtSecurityToken tokenValue = new JwtSecurityTokenHandler().ReadJwtToken(token);
+            var claimUserId = tokenValue.Claims.FirstOrDefault(
+                c => c.Type == CustomClaims.UserId);
+
+            if (claimUserId is null || !Guid.TryParse(claimUserId.Value, out Guid userId))
+            {
+                return Guid.Empty;
+            }
+
+            return userId;
+        }
     }
 }

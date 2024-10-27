@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using UniversityIT.API.Endpoints.Auth;
+using UniversityIT.API.Endpoints.HelpDesk;
 using UniversityIT.API.Endpoints.ServMon;
 using UniversityIT.Application.Services.Auth;
 using UniversityIT.Core.Abstractions.Auth.Permissions;
@@ -18,6 +19,7 @@ namespace UniversityIT.API.Extentions
             app.MapUsersEndpoints();
             app.MapServersEndpoints();
             app.MapServEventsEndpoints();
+            app.MapTicketsEndpoints();
         }
 
         public static void AddApiAuthentication(

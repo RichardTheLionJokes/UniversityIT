@@ -2,5 +2,6 @@
 {
     public record LoginUsersResponse(
         string Name,
-        string Email);
+        string Email,
+        Guid id);
 }

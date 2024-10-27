@@ -11,7 +11,6 @@ export const authConfig: AuthOptions = {
             async authorize(credentials) {
                 if (!credentials?.email || !credentials?.name) return null;
 
-                authConfig.session = { maxAge: 24*60*60 }
                 const currentUser = {email: credentials.email, name: credentials.name};
                 return currentUser as User;
             }

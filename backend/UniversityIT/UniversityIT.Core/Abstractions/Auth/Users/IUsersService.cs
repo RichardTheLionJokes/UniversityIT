@@ -11,5 +11,6 @@ namespace UniversityIT.Core.Abstractions.Auth.Users
         Task<Guid> UpdateUser(Guid id, string userName, string email, string fullName, string position, string phoneNumber);
         Task ChangePassword(string email, string oldPassword, string newPassword);
         Task ResetPassword(string email);
+        Guid GetIdByToken(string token);
     }
 }

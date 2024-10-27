@@ -14,6 +14,9 @@ using UniversityIT.Core.Abstractions.ServMon.ServEvents;
 using UniversityIT.Application.Abstractions.Common;
 using UniversityIT.Infrastructure.Common;
 using UniversityIT.Infrastructure.Background;
+using UniversityIT.Core.Abstractions.HelpDesk.Tickets;
+using UniversityIT.DataAccess.Repositories.HelpDesk;
+using UniversityIT.Application.Services.HelpDesk;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -39,10 +42,12 @@ services.AddDbContext<UniversityITDbContext>(options =>
 services.AddScoped<IUsersRepository, UsersRepository>();
 services.AddScoped<IServersRepository, ServersRepository>();
 services.AddScoped<IServEventsRepository, ServEventsRepository>();
+services.AddScoped<ITicketsRepository, TicketsRepository>();
 
 services.AddScoped<IUsersService, UsersService>();
 services.AddScoped<IServersService, ServersService>();
 services.AddScoped<IServEventsService, ServEventsService>();
+services.AddScoped<ITicketsService, TicketsService>();
 
 services.AddScoped<IJwtProvider, JwtProvider>();
 services.AddScoped<IPasswordHasher, PasswordHasher>();

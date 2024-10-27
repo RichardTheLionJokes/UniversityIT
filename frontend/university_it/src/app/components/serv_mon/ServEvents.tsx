@@ -39,7 +39,7 @@ export const ServEvents = ({ servEvents }: Props) => {
       ];
 
     let i = 1;
-      servEvents.map((servEvent: ServEvent) => {
+    servEvents.map((servEvent: ServEvent) => {
         dataSource.push({
             key: i,
             serverName: servEvent.serverName,

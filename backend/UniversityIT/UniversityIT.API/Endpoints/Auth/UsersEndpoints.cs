@@ -48,13 +48,9 @@ namespace UniversityIT.API.Endpoints.Auth
         {
             var (token,user) = await usersService.Login(request.Email, request.Password);
 
-            var cookieOptions = new CookieOptions
-            {
-                MaxAge = TimeSpan.FromHours(24)
-            };
-            context.Response.Cookies.Append("tasty-cookies", token, cookieOptions);
+            context.Response.Cookies.Append("tasty-cookies", token);
 
-            var response = new LoginUsersResponse(user.UserName, user.Email);
+            var response = new LoginUsersResponse(user.UserName, user.Email, user.Id);
 
             return Results.Ok(response);
         }

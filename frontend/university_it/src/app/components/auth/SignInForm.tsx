@@ -19,6 +19,7 @@ const SignInForm = () => {
 
     const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
         const user = await login(values.email, values.password);
+        localStorage.setItem("userId", user.id);
 
         const res = await signIn("credentials", {
             email: user.email,

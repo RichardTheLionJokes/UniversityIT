@@ -1,4 +1,6 @@
-﻿namespace UniversityIT.DataAccess.Entities.Auth
+﻿using UniversityIT.DataAccess.Entities.HelpDesk;
+
+namespace UniversityIT.DataAccess.Entities.Auth
 {
     public class UserEntity
     {
@@ -10,5 +12,6 @@
         public string Position { get; set; } = string.Empty;
         public string PhoneNumber { get; set; } = string.Empty;
         public ICollection<RoleEntity> Roles { get; set; } = [];
+        public ICollection<TicketEntity> Tickets { get; set; } = [];
     }
 }

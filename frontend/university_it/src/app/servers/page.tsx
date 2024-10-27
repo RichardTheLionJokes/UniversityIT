@@ -7,7 +7,7 @@ import { createServer, deleteServer, getAllServers, pingServer, ServerRequest, u
 import Title from "antd/es/typography/Title";
 import { CreateUpdateServer, Mode } from "@/app/components/serv_mon/CreateUpdateServer";
 
-export default function ServersPage(){
+export default function ServersPage() {
     const defaultValues = {
         name: "",
         ipAddress: "",
@@ -18,7 +18,6 @@ export default function ServersPage(){
     } as Server;
 
     const [values, setValues] = useState<Server>(defaultValues);
-
     const [servers, setServers] = useState<Server[]>([]);
     const [loading, setLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);

@@ -7,7 +7,7 @@ export interface ServerRequest {
 }
 
 export const getAllServers = async () => {
-    const response = await fetch(process.env.NEXT_PUBLIC_API_URL+"Servers", {
+    const response = await fetch(process.env.NEXT_PUBLIC_API_URL+"servers", {
         method: "GET",
         credentials: "include",
         mode: "cors"

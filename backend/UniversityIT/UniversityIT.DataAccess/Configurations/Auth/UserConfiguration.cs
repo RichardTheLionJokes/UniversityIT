@@ -25,6 +25,9 @@ namespace UniversityIT.DataAccess.Configurations.Auth
                 .UsingEntity<UserRoleEntity>(
                     r => r.HasOne<RoleEntity>().WithMany().HasForeignKey(e => e.RoleId),
                     u => u.HasOne<UserEntity>().WithMany().HasForeignKey(e => e.UserId));
+
+            builder.HasMany(u => u.Tickets)
+                .WithOne(t => t.User);
         }
     }
 }
