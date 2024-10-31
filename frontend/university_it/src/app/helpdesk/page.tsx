@@ -13,7 +13,8 @@ export default function TicketsPage() {
         name: "",
         description: "",
         place: "",
-        isCompleted: false
+        isCompleted: false,
+        notificationsSent: false
     } as Ticket;
 
     const [values, setValues] = useState<Ticket>(defaultValues);

@@ -1,4 +1,5 @@
 import { Table } from "antd";
+import moment from "moment";
 
 type EventRow = {
     key: number
@@ -35,6 +36,7 @@ export const ServEvents = ({ servEvents }: Props) => {
             title: "Happened at",
             dataIndex: "happenedAt",
             key: "happenedAt",
+            render: (value: Date) => { return <p>{moment(value).format("DD-MM-YYYY h:mm:ss")}</p> },
         },
       ];
 

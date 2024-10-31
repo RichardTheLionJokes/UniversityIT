@@ -1,5 +1,6 @@
 ﻿using UniversityIT.Application.Abstractions.Auth;
 using UniversityIT.Application.Abstractions.Common;
+using UniversityIT.Application.ValueObjects;
 using UniversityIT.Core.Abstractions.Auth.Users;
 using UniversityIT.Core.Models.Auth;
 
@@ -42,7 +43,7 @@ namespace UniversityIT.Application.Services.Auth
 
                 string message = $"You new password is {password}";
                 string subject = $"Password for {email}";
-                await _messageService.SendMessage(email, subject, message);
+                await _messageService.SendMessage(MessageReceiver.Create(email).Value, subject, message);
             }
         }
 
@@ -111,7 +112,7 @@ namespace UniversityIT.Application.Services.Auth
 
                 string message = $"You new password is {password}";
                 string subject = $"Password for {email}";
-                await _messageService.SendMessage(email, subject, message);
+                await _messageService.SendMessage(MessageReceiver.Create(email).Value, subject, message);
             }
         }
 

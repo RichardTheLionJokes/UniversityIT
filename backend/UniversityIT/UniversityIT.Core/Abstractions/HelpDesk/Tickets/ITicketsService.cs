@@ -10,5 +10,6 @@ namespace UniversityIT.Core.Abstractions.HelpDesk.Tickets
         Task<List<Ticket>> GetTicketsByUserId(Guid UserId);
         Task<Guid> UpdateTicket(Guid id, string name, string description, string place, bool isCompleted);
         Task<Guid> DeleteTicket(Guid id);
+        Task NotifyAboutCreation(Guid id);
     }
 }

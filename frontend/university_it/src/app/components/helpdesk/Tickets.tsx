@@ -1,4 +1,5 @@
-import { Space, Table, TableProps } from "antd"
+import { Space, Table, TableProps } from "antd";
+import moment from "moment";
 
 type Props = {
     tickets: Ticket[];
@@ -27,12 +28,19 @@ export const Tickets = ({ tickets, handleOpen, handleDelete }: Props) => {
             title: "Created at",
             dataIndex: "createdAt",
             key: "createdAt",
+            render: (value) => { return <p>{moment(value).format("DD-MM-YYYY h:mm:ss")}</p> },
         },
         {
             title: "Is completed",
             dataIndex: "isCompleted",
             key: "isCompleted",
-            render: (text) => String(text)
+            render: (value) => value == true ? "✔" : ""
+        },
+        {
+            title: "Notifications sent",
+            dataIndex: "notificationsSent",
+            key: "notificationsSent",
+            render: (value) => value == true ? "✔" : "❌"
         },
         {
             title: "Action",

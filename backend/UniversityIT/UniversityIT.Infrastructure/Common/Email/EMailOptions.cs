@@ -1,4 +1,4 @@
-﻿namespace UniversityIT.Infrastructure.Common
+﻿namespace UniversityIT.Infrastructure.Common.Email
 {
     public class EMailOptions
     {

@@ -62,6 +62,7 @@ namespace UniversityIT.DataAccess.Repositories.HelpDesk
         {
             var ticketEntity = await _context.Tickets
                 .AsNoTracking()
+                .Include(t => t.User)
                 .FirstOrDefaultAsync(t => t.Id == id) ?? throw new Exception();
 
             return Ticket.Create(
@@ -121,6 +122,14 @@ namespace UniversityIT.DataAccess.Repositories.HelpDesk
                 .ExecuteDeleteAsync();
 
             return id;
+        }
+
+        public async Task SetNotification(Guid id)
+        {
+            await _context.Tickets
+            .Where(t => t.Id == id)
+            .ExecuteUpdateAsync(spc => spc
+                    .SetProperty(t => t.NotificationsSent, t => true));
         }
     }
 }

@@ -17,6 +17,8 @@ using UniversityIT.Infrastructure.Background;
 using UniversityIT.Core.Abstractions.HelpDesk.Tickets;
 using UniversityIT.DataAccess.Repositories.HelpDesk;
 using UniversityIT.Application.Services.HelpDesk;
+using UniversityIT.Infrastructure.Common.Telegram;
+using UniversityIT.Infrastructure.Common.Email;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -24,6 +26,7 @@ var configuration = builder.Configuration;
 
 configuration.AddJsonFile("settings.json", false, true);
 services.Configure<EMailOptions>(configuration.GetSection("UniversityIT").GetSection(nameof(EMailOptions)));
+services.Configure<TelegramOptions>(configuration.GetSection("UniversityIT").GetSection(nameof(TelegramOptions)));
 services.Configure<JwtOptions>(configuration.GetSection("UniversityIT").GetSection(nameof(JwtOptions)));
 services.Configure<AuthorizationOptions>(configuration.GetSection("UniversityIT").GetSection(nameof(AuthorizationOptions)));
 services.Configure<PasswordPolicyOptions>(configuration.GetSection("UniversityIT").GetSection(nameof(PasswordPolicyOptions)));
@@ -39,6 +42,12 @@ services.AddDbContext<UniversityITDbContext>(options =>
     options.UseSqlServer(configuration.GetConnectionString(nameof(UniversityITDbContext)));
 });
 
+services.AddSingleton<TelegramService>();
+
+services.AddScoped<IMessageService, EmailService>();
+services.AddKeyedScoped<IMessageService, TelegramService>("telegram");
+services.AddScoped<IPinger, Pinger>();
+
 services.AddScoped<IUsersRepository, UsersRepository>();
 services.AddScoped<IServersRepository, ServersRepository>();
 services.AddScoped<IServEventsRepository, ServEventsRepository>();
@@ -52,9 +61,8 @@ services.AddScoped<ITicketsService, TicketsService>();
 services.AddScoped<IJwtProvider, JwtProvider>();
 services.AddScoped<IPasswordHasher, PasswordHasher>();
 services.AddScoped<IPasswordGenerator, PasswordGenerator>();
-services.AddScoped<IMessageService, EmailService>();
-services.AddScoped<IPinger, Pinger>();
 
+services.AddHostedService<TelegramBotReceiver>();
 services.AddHostedService<ServScanner>();
 
 services.AddCors(options =>

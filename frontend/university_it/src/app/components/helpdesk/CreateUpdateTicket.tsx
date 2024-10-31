@@ -74,13 +74,13 @@ export const CreateUpdateTicket = ({
                     onChange={(e: { target: { value: SetStateAction<string>; }; }) => setPlace(e.target.value)}
                     placeholder = "Place"
                 />
-                <h3>Status: {values.isCompleted}</h3>
                 <Checkbox
                     checked={isCompleted}
                     onChange={(e: { target: { checked: boolean | ((prevState: boolean) => boolean); }; }) => setIsCompleted(e.target.checked)}
                 >
                     Is completed
                 </Checkbox>
+                <p>{values.notificationsSent ? "✔" : "❌"} Notifications sent</p>
             </div>
         </Modal>
     )

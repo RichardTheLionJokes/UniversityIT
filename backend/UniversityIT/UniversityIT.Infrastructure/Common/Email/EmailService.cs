@@ -2,8 +2,9 @@
 using Microsoft.Extensions.Options;
 using MimeKit;
 using UniversityIT.Application.Abstractions.Common;
+using UniversityIT.Application.ValueObjects;
 
-namespace UniversityIT.Infrastructure.Common
+namespace UniversityIT.Infrastructure.Common.Email
 {
     public class EmailService : IMessageService
     {
@@ -14,8 +15,10 @@ namespace UniversityIT.Infrastructure.Common
             _eMailOptions = options.Value;
         }
 
-        public async Task SendMessage(string receiver, string subject, string message)
+        public async Task<bool> SendMessage(MessageReceiver receiver, string subject, string message)
         {
+            bool success = false;
+
             try
             {
                 using (var smtp = new SmtpClient())
@@ -32,18 +35,23 @@ namespace UniversityIT.Infrastructure.Common
                         }
                     };
 
-                    MailboxAddress address = new MailboxAddress("", receiver);
+                    MailboxAddress address = new MailboxAddress("", receiver.StringAddress);
                     msg.To.Add(address);
                     msg.From.Add(new MailboxAddress("AmGPGU-IT", _eMailOptions.YandexLogin));
 
                     await smtp.SendAsync(msg);
                     await smtp.DisconnectAsync(true);
+
+                    success = true;
                 }
             }
             catch (Exception ex)
             {
+                success = false;
                 Console.WriteLine(ex);
             }
+
+            return success;
         }
     }
 }

@@ -1,7 +1,9 @@
-﻿namespace UniversityIT.Application.Abstractions.Common
+﻿using UniversityIT.Application.ValueObjects;
+
+namespace UniversityIT.Application.Abstractions.Common
 {
     public interface IMessageService
     {
-        public Task SendMessage(string receiver, string subject, string message);
+        public Task<bool> SendMessage(MessageReceiver receiver, string subject, string message);
     }
 }
