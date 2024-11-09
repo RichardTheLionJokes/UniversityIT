@@ -1,3 +1,4 @@
+import Button from "antd/es/button/button"
 import { Space, Table, TableProps } from "antd";
 import moment from "moment";
 
@@ -46,10 +47,21 @@ export const Tickets = ({ tickets, handleOpen, handleDelete }: Props) => {
             title: "Action",
             key: "action",
             render: (_, record) => (
-                <Space size="middle">
-                    <a onClick={() => handleOpen(record)}>Edit</a>
-                    <a onClick={() => handleDelete(record.id)}>Delete</a>
-                </Space>
+                <Space size="small">
+                <Button
+                    onClick={() => handleOpen(record)}
+                    style={{flex: 1}}
+                >
+                    Edit
+                </Button>
+                <Button
+                    onClick={() => handleDelete(record.id)}
+                    danger
+                    style={{flex: 1}}
+                >
+                    Delete
+                </Button>
+            </Space>
             ),
         }
     ];

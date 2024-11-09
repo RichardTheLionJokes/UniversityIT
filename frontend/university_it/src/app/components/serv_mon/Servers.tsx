@@ -1,6 +1,5 @@
-import Card from "antd/es/card/Card"
-import { ServCardTitle } from "./ServCardTitle"
 import Button from "antd/es/button/button"
+import { Space, Table, TableProps } from "antd";
 
 type Props = {
     servers: Server[];
@@ -10,41 +9,69 @@ type Props = {
 }
 
 export const Servers = ({ servers, handleOpen, handlePing, handleDelete }: Props) => {
-    return (
-        <div className="cards">
-            {servers.map((server: Server) => (
-                <Card
-                    key={server.id}
-                    title={<ServCardTitle name={server.name} ip_address={server.ipAddress}/>}
-                    bordered={false}                    
-                    style={{ backgroundColor: server.currentStatus == "Available" ? '#FFFFFF' : '#CCCCCC' }}
-                >
-                    <p>{server.shortDescription}</p>
-                    <p>{server.currentStatus}</p>
-                    <p>{server.activity}</p>
-                    <div className="card__buttons">
-                        <Button
-                            onClick={() => handleOpen(server)}
-                            style={{flex: 1}}
-                        >
-                            Edit
-                        </Button>
-                        <Button
-                            onClick={() => handlePing(server.id)}
-                            style={{flex: 1}}
-                        >
-                            Ping
-                        </Button>
-                        <Button
-                            onClick={() => handleDelete(server.id)}
-                            danger
-                            style={{flex: 1}}
-                        >
-                            Delete
-                        </Button>
-                    </div>
-                </Card>
-            ))}
+    const columns: TableProps<Server>['columns'] = [
+        {
+            title: "Name",
+            dataIndex: "name",
+            key: "name",
+        },
+        {
+            title: "Ip address",
+            dataIndex: "ipAddress",
+            key: "ipAddress",
+        },
+        {
+            title: "Short description",
+            dataIndex: "shortDescription",
+            key: "shortDescription",
+        },
+        {
+            title: "Current status",
+            dataIndex: "currentStatus",
+            key: "currentStatus",
+        },
+        {
+            title: "Activity",
+            dataIndex: "activity",
+            key: "activity",
+            render: (value) => value == true ? "✔" : ""
+        },
+        {
+            title: "Action",
+            key: "action",
+            render: (_, record) => (
+                <Space size="small">
+                    <Button
+                        onClick={() => handleOpen(record)}
+                        style={{flex: 1}}
+                    >
+                        Edit
+                    </Button>
+                    <Button
+                        onClick={() => handlePing(record.id)}
+                        style={{flex: 1}}
+                    >
+                        Ping
+                    </Button>
+                    <Button
+                        onClick={() => handleDelete(record.id)}
+                        danger
+                        style={{flex: 1}}
+                    >
+                        Delete
+                    </Button>
+                </Space>
+            ),
+        }
+    ];
+    
+    return (        
+        <div>
+            <Table
+                columns={columns}
+                dataSource={servers}
+                rowKey={(record) => record.id}
+            />;
         </div>
     )
 }
