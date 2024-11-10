@@ -3,6 +3,7 @@ using UniversityIT.Core.Abstractions.ServMon.Servers;
 using UniversityIT.Core.Abstractions.ServMon.ServEvents;
 using UniversityIT.Core.Enums.Common;
 using UniversityIT.Core.Models.ServMon;
+using UniversityIT.Core.ValueObjects;
 
 namespace UniversityIT.Application.Services.ServMon
 {
@@ -29,9 +30,9 @@ namespace UniversityIT.Application.Services.ServMon
             return await _serversRepository.Get();
         }
 
-        public async Task<Guid> UpdateServer(Guid id, string name, string ipAddress, string shortDescription, string description, bool activity)
+        public async Task<Guid> UpdateServer(Guid id, NetAddress netAddress, string shortDescription, string description, bool activity)
         {
-            return await _serversRepository.Update(id, name, ipAddress, shortDescription, description, activity);
+            return await _serversRepository.Update(id, netAddress, shortDescription, description, activity);
         }
 
         public async Task<Guid> DeleteServer(Guid id)
@@ -52,8 +53,7 @@ namespace UniversityIT.Application.Services.ServMon
                     DateTime.Now,
                     curStatus,
                     server.Id,
-                    server.Name,
-                    server.IpAddress);
+                    server.NetAddress);
 
                 await _servEventsRepository.Create(servEvent.Value);
             }

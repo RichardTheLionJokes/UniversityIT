@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using UniversityIT.Core.Models.ServMon;
+using UniversityIT.Core.ValueObjects;
 using UniversityIT.DataAccess.Entities.ServMon;
 
 namespace UniversityIT.DataAccess.Configurations.ServMon
@@ -11,10 +12,13 @@ namespace UniversityIT.DataAccess.Configurations.ServMon
         {
             builder.HasKey(e => e.Id);
 
-            builder.Property(e => e.Name)
-                .HasMaxLength(Server.MAX_NAME_LENGTH);
-
-            builder.Property(e => e.IpAddress);
+            builder.ComplexProperty(e => e.NetAddress, b =>
+            {
+                b.IsRequired();
+                b.Property(g => g.NetName).HasColumnName("Name")
+                    .HasMaxLength(NetAddress.MAX_NAME_LENGTH);
+                b.Property(g => g.IpAddress).HasColumnName("IpAddress");
+            });
 
             builder.Property(e => e.ShortDescription)
                 .HasMaxLength(Server.MAX_SHORT_DESCR_LENGTH)

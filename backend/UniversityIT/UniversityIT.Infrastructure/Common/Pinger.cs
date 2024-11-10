@@ -11,7 +11,7 @@ namespace UniversityIT.Infrastructure.Common
         {
             try
             {
-                string address = !string.IsNullOrEmpty(server.Name) ? server.Name : server.IpAddress;
+                string address = !string.IsNullOrEmpty(server.NetAddress.NetName) ? server.NetAddress.NetName : server.NetAddress.IpAddress;
                 Ping pingSender = new();
                 PingReply reply = await pingSender.SendPingAsync(address, timeout);
 

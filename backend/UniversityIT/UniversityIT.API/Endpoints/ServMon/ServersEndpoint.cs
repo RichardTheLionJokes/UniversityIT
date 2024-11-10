@@ -5,6 +5,7 @@ using UniversityIT.Core.Abstractions.ServMon.Servers;
 using UniversityIT.Core.Enums.Auth;
 using UniversityIT.Core.Enums.Common;
 using UniversityIT.Core.Models.ServMon;
+using UniversityIT.Core.ValueObjects;
 
 namespace UniversityIT.API.Endpoints.ServMon
 {
@@ -34,8 +35,7 @@ namespace UniversityIT.API.Endpoints.ServMon
         {
             var server = Server.Create(
                 Guid.NewGuid(),
-                request.Name,
-                request.IpAddress,
+                NetAddress.Create(request.Name, request.IpAddress).Value,
                 request.ShortDescription,
                 request.Description,
                 request.Activity,
@@ -58,8 +58,8 @@ namespace UniversityIT.API.Endpoints.ServMon
             var response = servers
                 .Select(s => new ServersResponse(
                     s.Id,
-                    s.Name,
-                    s.IpAddress,
+                    s.NetAddress.NetName,
+                    s.NetAddress.IpAddress,
                     s.ShortDescription,
                     s.Description,
                     s.Activity,
@@ -72,8 +72,7 @@ namespace UniversityIT.API.Endpoints.ServMon
         {
             var serverId = await serversService.UpdateServer(
                 id,
-                request.Name,
-                request.IpAddress,
+                NetAddress.Create(request.Name, request.IpAddress).Value,
                 request.ShortDescription,
                 request.Description,
                 request.Activity);

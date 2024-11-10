@@ -44,8 +44,7 @@ namespace UniversityIT.DataAccess.Repositories.ServMon
                     se.HappenedAt,
                     (NetStatus)se.ServStatusId,
                     se.ServerId,
-                    se.Server?.Name,
-                    se.Server?.IpAddress)
+                    se.Server?.NetAddress)
                 .Value)
                 .ToList();
 

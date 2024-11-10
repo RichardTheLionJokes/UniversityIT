@@ -24,7 +24,7 @@ namespace UniversityIT.Application.ValueObjects
         {
             if (String.IsNullOrEmpty(stringAddress))
             {
-                return Result.Failure<MessageReceiver>($"'{nameof(stringAddress)}' can't be empty at the same time");
+                return Result.Failure<MessageReceiver>($"'{nameof(stringAddress)}' can't be empty");
             }
 
             return new MessageReceiver(stringAddress);

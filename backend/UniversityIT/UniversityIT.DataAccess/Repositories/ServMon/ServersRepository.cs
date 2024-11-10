@@ -2,6 +2,7 @@
 using UniversityIT.Core.Abstractions.ServMon.Servers;
 using UniversityIT.Core.Enums.Common;
 using UniversityIT.Core.Models.ServMon;
+using UniversityIT.Core.ValueObjects;
 using UniversityIT.DataAccess.Entities.ServMon;
 
 namespace UniversityIT.DataAccess.Repositories.ServMon
@@ -20,8 +21,7 @@ namespace UniversityIT.DataAccess.Repositories.ServMon
             var serverEntity = new ServerEntity
             {
                 Id = server.Id,
-                Name = server.Name,
-                IpAddress = server.IpAddress,
+                NetAddress = server.NetAddress,
                 Description = server.Description,
                 ShortDescription = server.ShortDescription,
                 Activity = server.Activity,
@@ -41,7 +41,7 @@ namespace UniversityIT.DataAccess.Repositories.ServMon
                 .ToListAsync();
 
             var servers = serverEntities
-                .Select(s => Server.Create(s.Id, s.Name, s.IpAddress, s.Description, s.ShortDescription, s.Activity, (NetStatus)s.CurrentStatusId).Value)
+                .Select(s => Server.Create(s.Id, s.NetAddress, s.Description, s.ShortDescription, s.Activity, (NetStatus)s.CurrentStatusId).Value)
                 .ToList();
 
             return servers;
@@ -55,21 +55,20 @@ namespace UniversityIT.DataAccess.Repositories.ServMon
 
             return Server.Create(
                 serverEntity.Id,
-                serverEntity.Name,
-                serverEntity.IpAddress,
+                serverEntity.NetAddress,
                 serverEntity.Description,
                 serverEntity.ShortDescription,
                 serverEntity.Activity,
                 (NetStatus)serverEntity.CurrentStatusId).Value;
         }
 
-        public async Task<Guid> Update(Guid id, string name, string ipAddress, string shortDescription, string description, bool activity)
+        public async Task<Guid> Update(Guid id, NetAddress NetAddress, string shortDescription, string description, bool activity)
         {
             await _context.Servers
             .Where(s => s.Id == id)
             .ExecuteUpdateAsync(spc => spc
-                    .SetProperty(s => s.Name, s => name)
-                    .SetProperty(s => s.IpAddress, s => ipAddress)
+                    .SetProperty(s => s.NetAddress.NetName, s => NetAddress.NetName)
+                    .SetProperty(s => s.NetAddress.IpAddress, s => NetAddress.IpAddress)
                     .SetProperty(s => s.ShortDescription, s => shortDescription)
                     .SetProperty(s => s.Description, s => description)
                     .SetProperty(s => s.Activity, s => activity));

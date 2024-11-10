@@ -26,8 +26,8 @@ namespace UniversityIT.API.Endpoints.ServMon
                 se.HappenedAt,
                 se.ServStatus.ToString(),
                 se.ServerId,
-                se.ServerName,
-                se.ServerIp));
+                se.ServerAddress?.NetName,
+                se.ServerAddress?.IpAddress));
 
             return Results.Ok(response);
         }
