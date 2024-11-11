@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UniversityIT.Core.Abstractions.ServMon.ServEvents;
-using UniversityIT.Core.Enums.Common;
 using UniversityIT.Core.Models.ServMon;
-using UniversityIT.DataAccess.Entities.ServMon;
 
 namespace UniversityIT.DataAccess.Repositories.ServMon
 {
@@ -17,13 +15,7 @@ namespace UniversityIT.DataAccess.Repositories.ServMon
 
         public async Task<Guid> Create(ServEvent servEvent)
         {
-            var servEventEntity = new ServEventEntity
-            {
-                Id = servEvent.Id,
-                HappenedAt = servEvent.HappenedAt,
-                ServStatusId = (int)servEvent.ServStatus,
-                ServerId = servEvent.ServerId
-            };
+            var servEventEntity = DataBaseMappings.ServEventToEntity(servEvent);
 
             await _context.ServEvents.AddAsync(servEventEntity);
             await _context.SaveChangesAsync();
@@ -39,13 +31,7 @@ namespace UniversityIT.DataAccess.Repositories.ServMon
                 .ToListAsync();
 
             var servEvents = servEventEntities
-                .Select(se => ServEvent.Create(
-                    se.Id,
-                    se.HappenedAt,
-                    (NetStatus)se.ServStatusId,
-                    se.ServerId,
-                    se.Server?.NetAddress)
-                .Value)
+                .Select(se => DataBaseMappings.EntityToServEvent(se))
                 .ToList();
 
             return servEvents;

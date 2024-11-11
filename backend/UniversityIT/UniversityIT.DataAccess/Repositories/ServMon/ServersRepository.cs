@@ -3,7 +3,6 @@ using UniversityIT.Core.Abstractions.ServMon.Servers;
 using UniversityIT.Core.Enums.Common;
 using UniversityIT.Core.Models.ServMon;
 using UniversityIT.Core.ValueObjects;
-using UniversityIT.DataAccess.Entities.ServMon;
 
 namespace UniversityIT.DataAccess.Repositories.ServMon
 {
@@ -18,15 +17,7 @@ namespace UniversityIT.DataAccess.Repositories.ServMon
 
         public async Task<Guid> Create(Server server)
         {
-            var serverEntity = new ServerEntity
-            {
-                Id = server.Id,
-                NetAddress = server.NetAddress,
-                Description = server.Description,
-                ShortDescription = server.ShortDescription,
-                Activity = server.Activity,
-                CurrentStatusId = (int)server.CurrentStatus
-            };
+            var serverEntity = DataBaseMappings.ServerToEntity(server);
 
             await _context.Servers.AddAsync(serverEntity);
             await _context.SaveChangesAsync();
@@ -41,7 +32,7 @@ namespace UniversityIT.DataAccess.Repositories.ServMon
                 .ToListAsync();
 
             var servers = serverEntities
-                .Select(s => Server.Create(s.Id, s.NetAddress, s.Description, s.ShortDescription, s.Activity, (NetStatus)s.CurrentStatusId).Value)
+                .Select(s => DataBaseMappings.EntityToServer(s))
                 .ToList();
 
             return servers;
@@ -53,13 +44,16 @@ namespace UniversityIT.DataAccess.Repositories.ServMon
                 .AsNoTracking()
                 .FirstOrDefaultAsync(s => s.Id == id) ?? throw new Exception();
 
-            return Server.Create(
-                serverEntity.Id,
-                serverEntity.NetAddress,
-                serverEntity.Description,
-                serverEntity.ShortDescription,
-                serverEntity.Activity,
-                (NetStatus)serverEntity.CurrentStatusId).Value;
+            return DataBaseMappings.EntityToServer(serverEntity);
+        }
+
+        public async Task<Server> GetByNetAddress(NetAddress netAddress)
+        {
+            var serverEntity = await _context.Servers
+                .AsNoTracking()
+                .FirstOrDefaultAsync(s => s.NetAddress == netAddress) ?? throw new Exception();
+
+            return DataBaseMappings.EntityToServer(serverEntity);
         }
 
         public async Task<Guid> Update(Guid id, NetAddress NetAddress, string shortDescription, string description, bool activity)

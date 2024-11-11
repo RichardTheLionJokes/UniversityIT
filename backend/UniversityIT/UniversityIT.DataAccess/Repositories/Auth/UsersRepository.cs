@@ -2,7 +2,6 @@
 using UniversityIT.Core.Abstractions.Auth.Users;
 using UniversityIT.Core.Enums.Auth;
 using UniversityIT.Core.Models.Auth;
-using UniversityIT.DataAccess.Entities.Auth;
 
 namespace UniversityIT.DataAccess.Repositories.Auth
 {
@@ -21,17 +20,7 @@ namespace UniversityIT.DataAccess.Repositories.Auth
                 .SingleOrDefaultAsync(r => r.Id == (int)Role.Employee)
                 ?? throw new InvalidOperationException();
 
-            var userEntity = new UserEntity
-            {
-                Id = user.Id,
-                UserName = user.UserName,
-                PasswordHash = user.PasswordHash,
-                Email = user.Email,
-                FullName = user.FullName,
-                Position = user.Position,
-                PhoneNumber = user.PhoneNumber,
-                Roles = [roleEntity]
-            };
+            var userEntity = DataBaseMappings.UserToEntity(user, [roleEntity]);
 
             await _context.Users.AddAsync(userEntity);
             await _context.SaveChangesAsync();
@@ -43,14 +32,7 @@ namespace UniversityIT.DataAccess.Repositories.Auth
                 .AsNoTracking()
                 .FirstOrDefaultAsync(u => u.Id == id) ?? throw new Exception();
 
-            return User.Create(
-                userEntity.Id,
-                userEntity.UserName,
-                userEntity.PasswordHash,
-                userEntity.Email,
-                userEntity.FullName,
-                userEntity.Position,
-                userEntity.PhoneNumber).Value;
+            return DataBaseMappings.EntityToUser(userEntity);
         }
 
         public async Task<User> GetByEmail(string email)
@@ -59,14 +41,7 @@ namespace UniversityIT.DataAccess.Repositories.Auth
                 .AsNoTracking()
                 .FirstOrDefaultAsync(u => u.Email == email) ?? throw new Exception();
 
-            return User.Create(
-                userEntity.Id,
-                userEntity.UserName,
-                userEntity.PasswordHash,
-                userEntity.Email,
-                userEntity.FullName,
-                userEntity.Position,
-                userEntity.PhoneNumber).Value;
+            return DataBaseMappings.EntityToUser(userEntity);
         }
 
         public async Task<HashSet<Permission>> GetUserPermissions(Guid userId)

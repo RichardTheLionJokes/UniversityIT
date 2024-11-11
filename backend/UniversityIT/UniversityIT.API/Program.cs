@@ -63,7 +63,7 @@ services.AddScoped<IPasswordHasher, PasswordHasher>();
 services.AddScoped<IPasswordGenerator, PasswordGenerator>();
 
 services.AddHostedService<TelegramBotReceiver>();
-//services.AddHostedService<ServScanner>();
+services.AddHostedService<ServScanner>();
 
 services.AddCors(options =>
 {

@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UniversityIT.Core.Abstractions.HelpDesk.Tickets;
 using UniversityIT.Core.Models.HelpDesk;
-using UniversityIT.DataAccess.Entities.HelpDesk;
 
 namespace UniversityIT.DataAccess.Repositories.HelpDesk
 {
@@ -16,17 +15,7 @@ namespace UniversityIT.DataAccess.Repositories.HelpDesk
 
         public async Task<Guid> Create(Ticket ticket)
         {
-            var ticketEntity = new TicketEntity
-            {
-                Id = ticket.Id,
-                Name = ticket.Name,
-                Description = ticket.Description,
-                Place = ticket.Place,
-                CreatedAt = ticket.CreatedAt,
-                NotificationsSent = ticket.NotificationsSent,
-                IsCompleted = ticket.IsCompleted,
-                UserId = ticket.AuthorId
-            };
+            var ticketEntity = DataBaseMappings.TicketToEntity(ticket);
 
             await _context.Tickets.AddAsync(ticketEntity);
             await _context.SaveChangesAsync();
@@ -42,17 +31,7 @@ namespace UniversityIT.DataAccess.Repositories.HelpDesk
                 .ToListAsync();
 
             var tickets = ticketEntities
-                .Select(t => Ticket.Create(
-                    t.Id,
-                    t.Name,
-                    t.Description,
-                    t.Place,
-                    t.CreatedAt,
-                    t.NotificationsSent,
-                    t.IsCompleted,
-                    t.UserId,
-                    t.User?.UserName)
-                .Value)
+                .Select(t => DataBaseMappings.EntityToTicket(t))
                 .ToList();
 
             return tickets;
@@ -65,16 +44,7 @@ namespace UniversityIT.DataAccess.Repositories.HelpDesk
                 .Include(t => t.User)
                 .FirstOrDefaultAsync(t => t.Id == id) ?? throw new Exception();
 
-            return Ticket.Create(
-                ticketEntity.Id,
-                ticketEntity.Name,
-                ticketEntity.Description,
-                ticketEntity.Place,
-                ticketEntity.CreatedAt,
-                ticketEntity.NotificationsSent,
-                ticketEntity.IsCompleted,
-                ticketEntity.UserId,
-                ticketEntity.User?.UserName).Value;
+            return DataBaseMappings.EntityToTicket(ticketEntity);
         }
 
         public async Task<List<Ticket>> GetByUserId(Guid userId)
@@ -86,17 +56,7 @@ namespace UniversityIT.DataAccess.Repositories.HelpDesk
                 .ToListAsync();
 
             var tickets = ticketEntities
-                .Select(t => Ticket.Create(
-                    t.Id,
-                    t.Name,
-                    t.Description,
-                    t.Place,
-                    t.CreatedAt,
-                    t.NotificationsSent,
-                    t.IsCompleted,
-                    t.UserId,
-                    t.User?.UserName)
-                .Value)
+                .Select(t => DataBaseMappings.EntityToTicket(t))
                 .ToList();
 
             return tickets;

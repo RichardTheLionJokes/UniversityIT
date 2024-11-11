@@ -9,6 +9,7 @@ namespace UniversityIT.Core.Abstractions.ServMon.Servers
         Task<Guid> Create(Server server);
         Task<List<Server>> Get();
         Task<Server> GetById(Guid id);
+        Task<Server> GetByNetAddress(NetAddress netAddress);
         Task<Guid> Update(Guid id, NetAddress NetAddress, string description, string shortDescription, bool activity);
         Task<Guid> Delete(Guid id);
         Task<NetStatus> ChangeStatus(Guid id, NetStatus status);
