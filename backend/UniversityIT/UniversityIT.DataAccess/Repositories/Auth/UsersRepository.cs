@@ -32,7 +32,7 @@ namespace UniversityIT.DataAccess.Repositories.Auth
                 .AsNoTracking()
                 .FirstOrDefaultAsync(u => u.Id == id) ?? throw new Exception();
 
-            return DataBaseMappings.EntityToUser(userEntity);
+            return DataBaseMappings.UserFromEntity(userEntity);
         }
 
         public async Task<User> GetByEmail(string email)
@@ -41,7 +41,7 @@ namespace UniversityIT.DataAccess.Repositories.Auth
                 .AsNoTracking()
                 .FirstOrDefaultAsync(u => u.Email == email) ?? throw new Exception();
 
-            return DataBaseMappings.EntityToUser(userEntity);
+            return DataBaseMappings.UserFromEntity(userEntity);
         }
 
         public async Task<HashSet<Permission>> GetUserPermissions(Guid userId)

@@ -28,10 +28,11 @@ namespace UniversityIT.DataAccess.Repositories.HelpDesk
             var ticketEntities = await _context.Tickets
                 .AsNoTracking()
                 .Include(t => t.User)
+                .OrderByDescending(t => t.CreatedAt)
                 .ToListAsync();
 
             var tickets = ticketEntities
-                .Select(t => DataBaseMappings.EntityToTicket(t))
+                .Select(t => DataBaseMappings.TicketFromEntity(t))
                 .ToList();
 
             return tickets;
@@ -44,7 +45,7 @@ namespace UniversityIT.DataAccess.Repositories.HelpDesk
                 .Include(t => t.User)
                 .FirstOrDefaultAsync(t => t.Id == id) ?? throw new Exception();
 
-            return DataBaseMappings.EntityToTicket(ticketEntity);
+            return DataBaseMappings.TicketFromEntity(ticketEntity);
         }
 
         public async Task<List<Ticket>> GetByUserId(Guid userId)
@@ -56,7 +57,7 @@ namespace UniversityIT.DataAccess.Repositories.HelpDesk
                 .ToListAsync();
 
             var tickets = ticketEntities
-                .Select(t => DataBaseMappings.EntityToTicket(t))
+                .Select(t => DataBaseMappings.TicketFromEntity(t))
                 .ToList();
 
             return tickets;

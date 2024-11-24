@@ -1,4 +1,5 @@
-﻿using UniversityIT.Application.Abstractions.Common;
+﻿using CSharpFunctionalExtensions;
+using UniversityIT.Application.Abstractions.Common;
 using UniversityIT.Core.Abstractions.ServMon.Servers;
 using UniversityIT.Core.Abstractions.ServMon.ServEvents;
 using UniversityIT.Core.Enums.Common;
@@ -20,9 +21,14 @@ namespace UniversityIT.Application.Services.ServMon
             _pinger = pinger;
         }
 
-        public async Task<Guid> CreateServer(Server server)
+        public async Task<Result<Guid>> CreateServer(Server server)
         {
-            return await _serversRepository.Create(server);
+            var netAddress = server.NetAddress;
+            var serverExists = await _serversRepository.ServerExists(netAddress);
+            if (!serverExists)
+                return await _serversRepository.Create(server);
+            else
+                return Result.Failure<Guid>($"There is already a server with name '{netAddress.NetName}' and ip '{netAddress.IpAddress}'");
         }
 
         public async Task<List<Server>> GetAllServers()

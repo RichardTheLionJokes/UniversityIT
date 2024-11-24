@@ -23,7 +23,7 @@ namespace UniversityIT.Core.ValueObjects
                 return Result.Failure<NetAddress>($"'{nameof(netName)}' and '{nameof(ipAddress)}' can't be empty at the same time");
             }
 
-            if (!Regex.IsMatch(ipAddress, ipRegex))
+            if (!string.IsNullOrWhiteSpace(ipAddress) && !Regex.IsMatch(ipAddress, ipRegex))
                 return Result.Failure<NetAddress>($"Invalid '{nameof(ipAddress)}' value");
 
             return new NetAddress(netName, ipAddress);

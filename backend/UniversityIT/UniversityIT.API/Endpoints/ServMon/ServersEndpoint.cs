@@ -33,20 +33,26 @@ namespace UniversityIT.API.Endpoints.ServMon
             [FromBody] ServersRequest request,
             IServersService serversService)
         {
+            var netAddress = NetAddress.Create(request.Name, request.IpAddress);
+
+            if (netAddress.IsFailure)
+                return Results.Problem(netAddress.Error);
+
             var server = Server.Create(
                 Guid.NewGuid(),
-                NetAddress.Create(request.Name, request.IpAddress).Value,
+                netAddress.Value,
                 request.ShortDescription,
                 request.Description,
                 request.Activity,
                 NetStatus.Undefined);
 
             if (server.IsFailure)
-            {
                 return Results.Problem(server.Error);
-            }
 
             var serverId = await serversService.CreateServer(server.Value);
+
+            if (serverId.IsFailure)
+                return Results.Problem(serverId.Error);
 
             return Results.Ok(serverId);
         }

@@ -29,10 +29,11 @@ namespace UniversityIT.DataAccess.Repositories.ServMon
         {
             var serverEntities = await _context.Servers
                 .AsNoTracking()
+                .OrderBy(s => s.NetAddress.NetName)
                 .ToListAsync();
 
             var servers = serverEntities
-                .Select(s => DataBaseMappings.EntityToServer(s))
+                .Select(s => DataBaseMappings.ServerFromEntity(s))
                 .ToList();
 
             return servers;
@@ -44,16 +45,7 @@ namespace UniversityIT.DataAccess.Repositories.ServMon
                 .AsNoTracking()
                 .FirstOrDefaultAsync(s => s.Id == id) ?? throw new Exception();
 
-            return DataBaseMappings.EntityToServer(serverEntity);
-        }
-
-        public async Task<Server> GetByNetAddress(NetAddress netAddress)
-        {
-            var serverEntity = await _context.Servers
-                .AsNoTracking()
-                .FirstOrDefaultAsync(s => s.NetAddress == netAddress) ?? throw new Exception();
-
-            return DataBaseMappings.EntityToServer(serverEntity);
+            return DataBaseMappings.ServerFromEntity(serverEntity);
         }
 
         public async Task<Guid> Update(Guid id, NetAddress NetAddress, string shortDescription, string description, bool activity)
@@ -87,6 +79,13 @@ namespace UniversityIT.DataAccess.Repositories.ServMon
                     .SetProperty(s => s.CurrentStatusId, s => (int)status));
 
             return status;
+        }
+
+        public async Task<bool> ServerExists(NetAddress netAddress)
+        {
+            return await _context.Servers
+                .AsNoTracking()
+                .AnyAsync(s => s.NetAddress == netAddress);
         }
     }
 }

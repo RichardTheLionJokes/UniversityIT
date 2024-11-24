@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using System;
 using UniversityIT.Application.Abstractions.Common;
 using UniversityIT.Application.ValueObjects;
 using UniversityIT.Core.Abstractions.HelpDesk.Tickets;

@@ -28,10 +28,11 @@ namespace UniversityIT.DataAccess.Repositories.ServMon
             var servEventEntities = await _context.ServEvents
                 .AsNoTracking()
                 .Include(se => se.Server)
+                .OrderByDescending(se => se.HappenedAt)
                 .ToListAsync();
 
             var servEvents = servEventEntities
-                .Select(se => DataBaseMappings.EntityToServEvent(se))
+                .Select(se => DataBaseMappings.ServEventFromEntity(se))
                 .ToList();
 
             return servEvents;

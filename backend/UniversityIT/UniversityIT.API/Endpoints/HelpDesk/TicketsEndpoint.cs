@@ -35,16 +35,12 @@ namespace UniversityIT.API.Endpoints.HelpDesk
             string? token = context.Request.Cookies["tasty-cookies"];
 
             if (String.IsNullOrEmpty(token))
-            {
                 return Results.Problem();
-            }
 
             Guid userId = usersService.GetIdByToken(token);
 
             if (userId == Guid.Empty)
-            {
                 return Results.Problem();
-            }
 
             var ticket = Ticket.Create(
                 Guid.NewGuid(),
@@ -58,9 +54,7 @@ namespace UniversityIT.API.Endpoints.HelpDesk
                 "");
 
             if (ticket.IsFailure)
-            {
                 return Results.Problem(ticket.Error);
-            }
 
             var ticketId = await ticketsService.CreateTicket(ticket.Value);
 

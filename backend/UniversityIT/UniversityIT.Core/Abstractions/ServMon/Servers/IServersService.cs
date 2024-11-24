@@ -1,4 +1,5 @@
-﻿using UniversityIT.Core.Enums.Common;
+﻿using CSharpFunctionalExtensions;
+using UniversityIT.Core.Enums.Common;
 using UniversityIT.Core.Models.ServMon;
 using UniversityIT.Core.ValueObjects;
 
@@ -6,7 +7,7 @@ namespace UniversityIT.Core.Abstractions.ServMon.Servers
 {
     public interface IServersService
     {
-        Task<Guid> CreateServer(Server server);
+        Task<Result<Guid>> CreateServer(Server server);
         Task<List<Server>> GetAllServers();
         Task<Guid> UpdateServer(Guid id, NetAddress netAddress, string description, string shortDescription, bool activity);
         Task<Guid> DeleteServer(Guid id);

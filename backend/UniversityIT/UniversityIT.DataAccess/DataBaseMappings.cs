@@ -25,7 +25,7 @@ namespace UniversityIT.DataAccess
             };
         }
 
-        internal static User EntityToUser(UserEntity userEntity)
+        internal static User UserFromEntity(UserEntity userEntity)
         {
             return User.Create(
                 userEntity.Id,
@@ -51,7 +51,7 @@ namespace UniversityIT.DataAccess
             };
         }
 
-        internal static Server EntityToServer(ServerEntity serverEntity)
+        internal static Server ServerFromEntity(ServerEntity serverEntity)
         {
             return Server.Create(
                 serverEntity.Id,
@@ -74,7 +74,7 @@ namespace UniversityIT.DataAccess
             };
         }
 
-        internal static ServEvent EntityToServEvent(ServEventEntity serverEntity)
+        internal static ServEvent ServEventFromEntity(ServEventEntity serverEntity)
         {
             return ServEvent.Create(
                 serverEntity.Id,
@@ -100,7 +100,7 @@ namespace UniversityIT.DataAccess
             };
         }
 
-        internal static Ticket EntityToTicket(TicketEntity ticketEntity)
+        internal static Ticket TicketFromEntity(TicketEntity ticketEntity)
         {
             return Ticket.Create(
                 ticketEntity.Id,
