@@ -1,8 +1,12 @@
-﻿using UniversityIT.Core.Enums.Common;
+﻿using Org.BouncyCastle.Asn1.Ocsp;
+using Org.BouncyCastle.Asn1.X509;
+using UniversityIT.Core.Enums.Common;
 using UniversityIT.Core.Models.Auth;
+using UniversityIT.Core.Models.FileStructure;
 using UniversityIT.Core.Models.HelpDesk;
 using UniversityIT.Core.Models.ServMon;
 using UniversityIT.DataAccess.Entities.Auth;
+using UniversityIT.DataAccess.Entities.FileStructure;
 using UniversityIT.DataAccess.Entities.HelpDesk;
 using UniversityIT.DataAccess.Entities.ServMon;
 
@@ -112,6 +116,72 @@ namespace UniversityIT.DataAccess
                 ticketEntity.IsCompleted,
                 ticketEntity.UserId,
                 ticketEntity.User?.UserName)
+                .Value;
+        }
+
+        internal static FolderEntity FolderToEntity(FolderDto folder)
+        {
+            return new FolderEntity
+            {
+                Name = folder.Name,
+                ParentId = folder.ParentId
+            };
+        }
+
+        internal static FolderDto FolderFromEntity(FolderEntity folderEntity)
+        {
+            return FolderDto.Create(
+                folderEntity.Id,
+                folderEntity.Name,
+                folderEntity.ParentId)
+                .Value;
+        }
+
+        internal static FileEntity FileToEntity(FileDto file)
+        {
+            return new FileEntity
+            {
+                Name = file.Name,
+                CreatedAt = file.CreatedAt,
+                StorageType = file.StorageType,
+                FileRefValue = file.FileRefValue,
+                ParentId = file.ParentId
+            };
+        }
+
+        internal static FileDto FileFromEntity(FileEntity fileEntity)
+        {
+            return FileDto.Create(
+                fileEntity.Id,
+                fileEntity.Name,
+                fileEntity.CreatedAt,
+                fileEntity.StorageType,
+                fileEntity.FileRefValue,
+                fileEntity.ParentId)
+                .Value;
+        }
+
+        internal static FileStructureDto FileStructureDtoFromFolderEntity(FolderEntity folderEntity)
+        {
+            return FileStructureDto.Create(
+                folderEntity.Id,
+                folderEntity.Name,
+                "",
+                true,
+                folderEntity.ParentId)
+                .Value;
+        }
+
+        internal static FileStructureDto FileStructureDtoFromFileEntity(FileEntity fileEntity)
+        {
+            int extIndex = fileEntity.FileRefValue.LastIndexOf(".");
+            string extension = (extIndex != -1) ? fileEntity.FileRefValue.Substring(extIndex).Trim() : "";
+            return FileStructureDto.Create(
+                fileEntity.Id,
+                fileEntity.Name,
+                extension,
+                false,
+                fileEntity.ParentId)
                 .Value;
         }
     }

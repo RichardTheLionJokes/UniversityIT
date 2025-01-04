@@ -19,6 +19,12 @@ using UniversityIT.DataAccess.Repositories.HelpDesk;
 using UniversityIT.Application.Services.HelpDesk;
 using UniversityIT.Infrastructure.Common.Telegram;
 using UniversityIT.Infrastructure.Common.Email;
+using UniversityIT.DataAccess.Repositories.FileStructure;
+using UniversityIT.Application.Services.FileStructure;
+using UniversityIT.Application.Abstractions.FileStructure;
+using UniversityIT.Infrastructure.FileStructure;
+using UniversityIT.Core.Abstractions.FileStructure.Files;
+using UniversityIT.Core.Abstractions.FileStructure.Folders;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -39,7 +45,7 @@ services.AddSwaggerGen();
 
 services.AddDbContext<UniversityITDbContext>(options =>
 {
-    options.UseSqlServer(configuration.GetConnectionString(nameof(UniversityITDbContext)));
+    options.UseNpgsql(configuration.GetConnectionString(nameof(UniversityITDbContext)));
 });
 
 services.AddSingleton<TelegramService>();
@@ -47,16 +53,21 @@ services.AddSingleton<TelegramService>();
 services.AddScoped<IMessageService, EmailService>();
 services.AddKeyedScoped<IMessageService, TelegramService>("telegram");
 services.AddScoped<IPinger, Pinger>();
+services.AddScoped<IFileManagementService, FileManagementService>();
 
 services.AddScoped<IUsersRepository, UsersRepository>();
 services.AddScoped<IServersRepository, ServersRepository>();
 services.AddScoped<IServEventsRepository, ServEventsRepository>();
 services.AddScoped<ITicketsRepository, TicketsRepository>();
+services.AddScoped<IFoldersRepository, FoldersRepository>();
+services.AddScoped<IFilesRepository, FilesRepository>();
 
 services.AddScoped<IUsersService, UsersService>();
 services.AddScoped<IServersService, ServersService>();
 services.AddScoped<IServEventsService, ServEventsService>();
 services.AddScoped<ITicketsService, TicketsService>();
+services.AddScoped<IFoldersService, FoldersService>();
+services.AddScoped<IFilesService, FilesService>();
 
 services.AddScoped<IJwtProvider, JwtProvider>();
 services.AddScoped<IPasswordHasher, PasswordHasher>();

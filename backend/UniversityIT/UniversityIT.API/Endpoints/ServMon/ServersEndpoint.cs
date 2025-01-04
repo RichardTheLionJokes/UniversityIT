@@ -54,7 +54,7 @@ namespace UniversityIT.API.Endpoints.ServMon
             if (serverId.IsFailure)
                 return Results.Problem(serverId.Error);
 
-            return Results.Ok(serverId);
+            return Results.Ok(serverId.Value);
         }
 
         private static async Task<IResult> GetServers(IServersService serversService)

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UniversityIT.Core.Enums.Auth;
 using UniversityIT.DataAccess.Entities.Auth;
+using UniversityIT.DataAccess.Entities.FileStructure;
 
 namespace UniversityIT.DataAccess.Extentions
 {
@@ -28,6 +29,12 @@ namespace UniversityIT.DataAccess.Extentions
             {
                 UserId = adminUser.Id,
                 RoleId = (int)Role.Admin
+            });
+
+            modelBuilder.Entity<FolderEntity>().HasData(new FolderEntity
+            {
+                Id = 1,
+                Name = "Documents"
             });
         }
     }

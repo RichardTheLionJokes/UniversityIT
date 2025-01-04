@@ -15,25 +15,25 @@ export const getTickets = async () => {
     return response.json();
 }
 
-export const createTicket = async (serverRequest: TicketRequest) => {
+export const createTicket = async (ticketRequest: TicketRequest) => {
     await fetch(process.env.NEXT_PUBLIC_API_URL+"tickets", {
         method: "POST",
         headers: {
             "content-type": "application/json"
         },
-        body: JSON.stringify(serverRequest),
+        body: JSON.stringify(ticketRequest),
         credentials: "include",
         mode: "cors"
     });
 }
 
-export const updateTicket = async (id: string, serverRequest: TicketRequest) => {
+export const updateTicket = async (id: string, ticketRequest: TicketRequest) => {
     await fetch(process.env.NEXT_PUBLIC_API_URL+`tickets/${id}`, {
         method: "PUT",
         headers: {
             "content-type": "application/json"
         },
-        body: JSON.stringify(serverRequest),
+        body: JSON.stringify(ticketRequest),
         credentials: "include",
         mode: "cors"
     });

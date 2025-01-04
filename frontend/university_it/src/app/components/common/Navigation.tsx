@@ -30,6 +30,7 @@ const Navigation = ({ navLinks }: Props) => {
                 {key: "servers", label: <Link href="/servers/">Servers</Link>},
                 {key: "servEvents", label: <Link href="/servers/events">Events</Link>}]});
         items.push({key: "helpdesk", label: <Link href="/helpdesk">HelpDesk</Link>});
+        items.push({key: "documents", label: <Link href="/documents">Documents</Link>});
     };
     items.push(session?.data ? (
         {key: "profile_menu", label: session.data.user?.name,

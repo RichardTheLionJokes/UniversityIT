@@ -48,20 +48,20 @@ export const Tickets = ({ tickets, handleOpen, handleDelete }: Props) => {
             key: "action",
             render: (_, record) => (
                 <Space size="small">
-                <Button
-                    onClick={() => handleOpen(record)}
-                    style={{flex: 1}}
-                >
-                    Edit
-                </Button>
-                <Button
-                    onClick={() => handleDelete(record.id)}
-                    danger
-                    style={{flex: 1}}
-                >
-                    Delete
-                </Button>
-            </Space>
+                    <Button
+                        onClick={() => handleOpen(record)}
+                        style={{flex: 1}}
+                    >
+                        Edit
+                    </Button>
+                    <Button
+                        onClick={() => handleDelete(record.id)}
+                        danger
+                        style={{flex: 1}}
+                    >
+                        Delete
+                    </Button>
+                </Space>
             ),
         }
     ];

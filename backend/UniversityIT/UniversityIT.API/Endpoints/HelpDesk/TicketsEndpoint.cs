@@ -47,7 +47,7 @@ namespace UniversityIT.API.Endpoints.HelpDesk
                 request.Name,
                 request.Description,
                 request.Place,
-                DateTime.Now,
+                DateTime.Now.ToUniversalTime(),
                 false,
                 request.IsCompleted,
                 userId,

@@ -26,7 +26,10 @@ namespace UniversityIT.Application.Services.ServMon
             var netAddress = server.NetAddress;
             var serverExists = await _serversRepository.ServerExists(netAddress);
             if (!serverExists)
-                return await _serversRepository.Create(server);
+            {
+                var serverId = await _serversRepository.Create(server);
+                return Result.Success(serverId);
+            }
             else
                 return Result.Failure<Guid>($"There is already a server with name '{netAddress.NetName}' and ip '{netAddress.IpAddress}'");
         }
@@ -56,7 +59,7 @@ namespace UniversityIT.Application.Services.ServMon
 
                 var servEvent = ServEvent.Create(
                     Guid.NewGuid(),
-                    DateTime.Now,
+                    DateTime.Now.ToUniversalTime(),
                     curStatus,
                     server.Id,
                     server.NetAddress);
