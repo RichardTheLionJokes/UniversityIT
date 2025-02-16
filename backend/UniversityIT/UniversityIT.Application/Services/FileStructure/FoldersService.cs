@@ -1,4 +1,5 @@
-﻿using UniversityIT.Core.Abstractions.FileStructure.Folders;
+﻿using UniversityIT.Core.Abstractions.FileStructure.Files;
+using UniversityIT.Core.Abstractions.FileStructure.Folders;
 using UniversityIT.Core.Models.FileStructure;
 
 namespace UniversityIT.Application.Services.FileStructure
@@ -6,10 +7,12 @@ namespace UniversityIT.Application.Services.FileStructure
     public class FoldersService : IFoldersService
     {
         private readonly IFoldersRepository _foldersRepository;
+        private readonly IFilesService _filesService;
 
-        public FoldersService(IFoldersRepository foldersRepository)
+        public FoldersService(IFoldersRepository foldersRepository, IFilesService filesService)
         {
             _foldersRepository = foldersRepository;
+            _filesService = filesService;
         }
 
         public async Task<int> CreateFolder(FolderDto folder)
@@ -24,10 +27,10 @@ namespace UniversityIT.Application.Services.FileStructure
             return await _foldersRepository.GetFolderWithChilds(id);
         }
 
-        public async Task<List<FileStructureDto>> GetFolderChilds(int id)
-        {
-            return await _foldersRepository.GetChilds(id);
-        }
+        //public async Task<List<FileStructureDto>> GetFolderChilds(int id)
+        //{
+        //    return await _foldersRepository.GetChilds(id);
+        //}
 
         public async Task<int> UpdateFolder(int id, string name)
         {
@@ -36,6 +39,12 @@ namespace UniversityIT.Application.Services.FileStructure
 
         public async Task<int> DeleteFolder(int id)
         {
+            var files = await _foldersRepository.GetAllLevelChildsFiles(id);
+            foreach (var file in files)
+            {
+                await _filesService.DeleteFile(file.Id);
+            }
+
             return await _foldersRepository.Delete(id);
         }
     }

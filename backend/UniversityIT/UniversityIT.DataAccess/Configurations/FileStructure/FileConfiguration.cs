@@ -25,6 +25,9 @@ namespace UniversityIT.DataAccess.Configurations.FileStructure
             builder.Property(e => e.ParentId)
                 .IsRequired();
 
+            builder.Property(e => e.ParentPath)
+                .IsRequired();
+
             builder.HasOne(fl => fl.Parent)
                 .WithMany(fr => fr.Files);
         }

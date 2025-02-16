@@ -4,9 +4,9 @@ import Title from "antd/es/typography/Title";
 import Button from "antd/es/button/button";
 import { useEffect, useState } from "react";
 import { FileStructures } from "../components/documents/FileStructures";
-import { createFolder, FolderRequest, getFolderWithChilds, updateFolder } from "../services/documents/folders";
+import { createFolder, deleteFolder, FolderRequest, getFolderWithChilds, updateFolder } from "../services/documents/folders";
 import { CreateUpdateFolder, Mode } from "../components/documents/CreateUpdateFolder";
-import { FileRequest, uploadFile } from "../services/documents/files";
+import { deleteFile, FileRequest, getFileDownloadRef, updateFile, uploadFile } from "../services/documents/files";
 import { useSearchParams } from "next/navigation";
 import { Space } from "antd";
 import { CreateUpdateFile } from "../components/documents/CreateUpdateFile";
@@ -58,15 +58,12 @@ export default function DocumentsPage() {
         setFileStructures(res.childs);
     };
     
-    const handleOpenFileStructure = async (id: number, isFolder: boolean) => {
-        
-        if (isFolder)
-        {
-            //openFolder
+    const getDownloadRef = (id: number, isFolder: boolean) => {
+        if (isFolder) {
+            return "";
         }
-        else
-        {
-            //downloadFile
+        else {
+            return getFileDownloadRef(id);"";
         }
     };
     
@@ -79,22 +76,34 @@ export default function DocumentsPage() {
     };
 
     const handleUpdateFile = async (id: number, request: FileRequest) => {
-        //
+        await updateFile(id, request);
+        closeModal();
+
+        const res:{id: number, name: string, parentId?: number, childs: FileStructure[]} = await getFolderWithChilds(folderId);
+        setFileStructures(res.childs);
     };
     
     const handleDeleteFileStructure = async (id: number, isFolder: boolean) => {
-        //
+        if (isFolder) {
+            await deleteFolder(id);
+        }
+        else {
+            await deleteFile(id);
+        }
+
+        const res:{id: number, name: string, parentId?: number, childs: FileStructure[]} = await getFolderWithChilds(folderId);
+        setFileStructures(res.childs);
     };
 
     const openFolderModal = () => {
         setMode(Mode.Create);
-        setIsModalFileOpen(false);
+        //setIsModalFileOpen(false);
         setIsModalFolderOpen(true);
     };
 
     const openFileModal = () => {
         setMode(Mode.Create);
-        setIsModalFolderOpen(false);
+        //setIsModalFolderOpen(false);
         setIsModalFileOpen(true);
     };
 
@@ -107,7 +116,12 @@ export default function DocumentsPage() {
     const openEditModal = (fileStructure: FileStructure) => {
         setMode(Mode.Edit);
         setValues(fileStructure);
-        setIsModalFolderOpen(true);
+        if (fileStructure.isFolder) {
+            setIsModalFolderOpen(true);
+        }
+        else {
+            setIsModalFileOpen(true);
+        }
     };
 
     return(
@@ -156,7 +170,7 @@ export default function DocumentsPage() {
                 <FileStructures
                     fileStructures={fileStructures}
                     path="http://localhost:3000/documents"
-                    handleOpen={handleOpenFileStructure}
+                    handleDownloadRef={getDownloadRef}
                     handleEdit={openEditModal}
                     handleDelete={handleDeleteFileStructure}
                 />

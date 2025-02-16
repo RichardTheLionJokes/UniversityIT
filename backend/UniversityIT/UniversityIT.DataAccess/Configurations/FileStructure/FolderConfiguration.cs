@@ -15,11 +15,16 @@ namespace UniversityIT.DataAccess.Configurations.FileStructure
 
             builder.HasOne(e => e.Parent);
 
+            builder.Property(e => e.ParentPath)
+                .IsRequired();
+
             builder.HasMany(flp => flp.Folders)
-                .WithOne(flc => flc.Parent);
+                .WithOne(flc => flc.Parent)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany(fl => fl.Files)
-                .WithOne(fl => fl.Parent);
+                .WithOne(fl => fl.Parent)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

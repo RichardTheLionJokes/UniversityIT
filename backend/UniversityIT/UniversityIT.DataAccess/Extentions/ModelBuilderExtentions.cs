@@ -34,7 +34,8 @@ namespace UniversityIT.DataAccess.Extentions
             modelBuilder.Entity<FolderEntity>().HasData(new FolderEntity
             {
                 Id = 1,
-                Name = "Documents"
+                Name = "Documents",
+                ParentPath = "/"
             });
         }
     }

@@ -1,16 +1,17 @@
 import Button from "antd/es/button/button"
 import { Space, Table, TableProps } from "antd";
-import { FileImageTwoTone, FileOutlined, FilePdfTwoTone, FileWordTwoTone, FolderTwoTone } from '@ant-design/icons';
+import Icon, { DownloadOutlined, FileImageTwoTone, FileOutlined, FilePdfTwoTone, FileWordTwoTone } from '@ant-design/icons';
+import { FolderIcon } from "./Icons";
 
 type Props = {
     fileStructures: FileStructure[];
     path: string;
-    handleOpen: (id: number, isFolder: boolean) => void;
+    handleDownloadRef: (id: number, isFolder: boolean) => string;
     handleEdit: (fileStructure: FileStructure) => void;
     handleDelete: (id: number, isFolder: boolean) => void;
 }
 
-export const FileStructures = ({ fileStructures, path, handleOpen, handleEdit, handleDelete }: Props) => {
+export const FileStructures = ({ fileStructures, path, handleDownloadRef, handleEdit, handleDelete }: Props) => {
 
     const columns: TableProps<FileStructure>['columns'] = [
         {
@@ -19,21 +20,21 @@ export const FileStructures = ({ fileStructures, path, handleOpen, handleEdit, h
             render: (_, record) => (
                 record.isFolder ? (
                 <Space size="small">
-                    <FolderTwoTone twoToneColor="#FFD700" />                    
+                    <Icon component={FolderIcon} />
                     <a href={path + "?id=" + String(record.id)} style={{fontSize: "15px"}}>{record.name}</a>
                 </Space>
                 ) : (
                 <Space size="small">
                     {(record.extention === ".pdf") ? (
-                        <p>{record.extention}</p>
+                        <FilePdfTwoTone twoToneColor="#8B0000" style={{ fontSize: '16px' }} />
                     ) : ([".doc",".docx"].includes(record.extention) ? (
-                        <FileWordTwoTone twoToneColor="#0000FF" />
+                        <FileWordTwoTone twoToneColor="#0000FF" style={{ fontSize: '16px' }} />
                     ) : ([".jpg",".jpeg",".png",".img",".gif"].includes(record.extention) ? (
-                        <FileImageTwoTone twoToneColor="#FF8C00" />
+                        <FileImageTwoTone twoToneColor="#FF8C00" style={{ fontSize: '16px' }} />
                     ) : (
                         <FileOutlined />
                     )))}
-                    {record.name + record.extention}
+                    <a href={handleDownloadRef(record.id, record.isFolder)} target="_blank">{record.name + record.extention}</a>
                 </Space>
                 )
             ),
@@ -56,6 +57,15 @@ export const FileStructures = ({ fileStructures, path, handleOpen, handleEdit, h
                     >
                         Delete
                     </Button>
+                    {/*<Button
+                        href={handleDownloadRef(record.id, record.isFolder)}
+                        type="primary"
+                        shape="round"
+                        icon={<DownloadOutlined />}
+                        style={{flex: 1}}
+                    >
+                        Download{record.isFolder ? ".zip" : ""}
+                    </Button>*/}
                 </Space>
             ),
         }
@@ -64,9 +74,10 @@ export const FileStructures = ({ fileStructures, path, handleOpen, handleEdit, h
     return(
         <div>
             <Table
+                size="small"
                 columns={columns}
                 dataSource={fileStructures}
-                rowKey={(record) => record.id}
+                rowKey={(record) => record.isFolder ? "folder-" : "file-" + record.id}
             />;
         </div>
     )

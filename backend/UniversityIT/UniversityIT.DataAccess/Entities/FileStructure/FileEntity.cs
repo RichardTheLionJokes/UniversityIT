@@ -11,5 +11,6 @@ namespace UniversityIT.DataAccess.Entities.FileStructure
         public string FileRefValue { get; set; } = string.Empty;
         public int ParentId { get; set; }
         public FolderEntity? Parent { get; set; }
+        public string ParentPath { get; set; } = string.Empty;
     }
 }

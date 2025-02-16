@@ -6,7 +6,7 @@ namespace UniversityIT.Core.Abstractions.FileStructure.Folders
     {
         Task<int> CreateFolder(FolderDto folder);
         Task<FolderWithChilds> GetFolderWithChilds(int id);
-        Task<List<FileStructureDto>> GetFolderChilds(int folderId);
+        //Task<List<FileStructureDto>> GetFolderChilds(int folderId);
         Task<int> UpdateFolder(int id, string name);
         Task<int> DeleteFolder(int id);
     }

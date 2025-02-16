@@ -1,6 +1,4 @@
-﻿using Org.BouncyCastle.Asn1.Ocsp;
-using Org.BouncyCastle.Asn1.X509;
-using UniversityIT.Core.Enums.Common;
+﻿using UniversityIT.Core.Enums.Common;
 using UniversityIT.Core.Models.Auth;
 using UniversityIT.Core.Models.FileStructure;
 using UniversityIT.Core.Models.HelpDesk;
@@ -124,7 +122,8 @@ namespace UniversityIT.DataAccess
             return new FolderEntity
             {
                 Name = folder.Name,
-                ParentId = folder.ParentId
+                ParentId = folder.ParentId,
+                ParentPath = folder.ParentPath
             };
         }
 
@@ -133,7 +132,8 @@ namespace UniversityIT.DataAccess
             return FolderDto.Create(
                 folderEntity.Id,
                 folderEntity.Name,
-                folderEntity.ParentId)
+                folderEntity.ParentId,
+                folderEntity.ParentPath)
                 .Value;
         }
 
@@ -145,7 +145,8 @@ namespace UniversityIT.DataAccess
                 CreatedAt = file.CreatedAt,
                 StorageType = file.StorageType,
                 FileRefValue = file.FileRefValue,
-                ParentId = file.ParentId
+                ParentId = file.ParentId,
+                ParentPath = file.ParentPath
             };
         }
 
@@ -157,7 +158,8 @@ namespace UniversityIT.DataAccess
                 fileEntity.CreatedAt,
                 fileEntity.StorageType,
                 fileEntity.FileRefValue,
-                fileEntity.ParentId)
+                fileEntity.ParentId,
+                fileEntity.ParentPath)
                 .Value;
         }
 
@@ -174,8 +176,8 @@ namespace UniversityIT.DataAccess
 
         internal static FileStructureDto FileStructureDtoFromFileEntity(FileEntity fileEntity)
         {
-            int extIndex = fileEntity.FileRefValue.LastIndexOf(".");
-            string extension = (extIndex != -1) ? fileEntity.FileRefValue.Substring(extIndex).Trim() : "";
+            string extension = Path.GetExtension(fileEntity.FileRefValue);
+
             return FileStructureDto.Create(
                 fileEntity.Id,
                 fileEntity.Name,

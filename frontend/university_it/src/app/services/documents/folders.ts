@@ -36,3 +36,11 @@ export const updateFolder = async (id: number, folderRequest: FolderRequest) => 
         mode: "cors"
     });
 }
+
+export const deleteFolder = async (id: number) => {
+    await fetch(process.env.NEXT_PUBLIC_API_URL+`folders/${id}`, {
+        method: "DELETE",
+        credentials: "include",
+        mode: "cors"
+    });
+}

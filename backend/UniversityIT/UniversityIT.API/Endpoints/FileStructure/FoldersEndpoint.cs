@@ -33,7 +33,8 @@ namespace UniversityIT.API.Endpoints.FileStructure
             var folder = FolderDto.Create(
                 -1,
                 request.Name,
-                request.ParentId
+                request.ParentId,
+                ""
                 );
 
             var folderId = await foldersService.CreateFolder(folder.Value);

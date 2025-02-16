@@ -6,6 +6,7 @@
         public string Name { get; set; } = string.Empty;
         public int? ParentId { get; set; }
         public FolderEntity? Parent { get; set; }
+        public string ParentPath { get; set; } = string.Empty;
         public ICollection<FolderEntity> Folders { get; set; } = [];
         public ICollection<FileEntity> Files { get; set; } = [];
     }
