@@ -44,3 +44,7 @@ export const deleteFolder = async (id: number) => {
         mode: "cors"
     });
 }
+
+export const getFolderDownloadRef = (id: number) => {
+    return process.env.NEXT_PUBLIC_API_URL+`folders/download/`+String(id);
+}

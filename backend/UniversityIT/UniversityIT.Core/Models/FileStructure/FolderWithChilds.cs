@@ -4,21 +4,17 @@ namespace UniversityIT.Core.Models.FileStructure
 {
     public class FolderWithChilds
     {
-        private FolderWithChilds(int id, string name, int? parentId)
+        private FolderWithChilds(int id, string name, int? parentId, string parentPath)
         {
-            Id = id;
-            Name = name;
-            ParentId = parentId;
+            Folder = FolderDto.Create(id, name, parentId, parentPath).Value;
         }
 
-        public int Id { get; }
-        public string Name { get; } = string.Empty;
-        public int? ParentId { get; }
+        public FolderDto Folder { get; }
         public List<FileStructureDto> Childs { get; set; } = [];
 
-        public static Result<FolderWithChilds> Create(int id, string name, int? parentId)
+        public static Result<FolderWithChilds> Create(int id, string name, int? parentId, string parentPath)
         {
-            var folder = new FolderWithChilds(id, name, parentId);
+            var folder = new FolderWithChilds(id, name, parentId, parentPath);
 
             return Result.Success(folder);
         }

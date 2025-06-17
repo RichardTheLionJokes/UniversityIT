@@ -57,15 +57,18 @@ export const FileStructures = ({ fileStructures, path, handleDownloadRef, handle
                     >
                         Delete
                     </Button>
-                    {/*<Button
-                        href={handleDownloadRef(record.id, record.isFolder)}
-                        type="primary"
-                        shape="round"
-                        icon={<DownloadOutlined />}
-                        style={{flex: 1}}
-                    >
-                        Download{record.isFolder ? ".zip" : ""}
-                    </Button>*/}
+                    {record.isFolder ? (
+                        <Button
+                            href={handleDownloadRef(record.id, record.isFolder)}
+                            type="primary"
+                            shape="round"
+                            icon={<DownloadOutlined />}
+                            style={{flex: 1}}
+                        >
+                            Download.zip
+                        </Button>
+                        ) : ("")
+                    }                        
                 </Space>
             ),
         }
@@ -77,7 +80,7 @@ export const FileStructures = ({ fileStructures, path, handleDownloadRef, handle
                 size="small"
                 columns={columns}
                 dataSource={fileStructures}
-                rowKey={(record) => record.isFolder ? "folder-" : "file-" + record.id}
+                rowKey={(record) => (record.isFolder ? "folder-" : "file-") + record.id}
             />;
         </div>
     )

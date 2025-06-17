@@ -40,7 +40,8 @@ namespace UniversityIT.DataAccess.Repositories.FileStructure
                 var folder = FolderWithChilds.Create(
                     folderEntity.Id,
                     folderEntity.Name,
-                    folderEntity.ParentId
+                    folderEntity.ParentId,
+                    folderEntity.ParentPath
                 ).Value;
 
                 foreach (var child in folderEntity.Folders)
@@ -82,16 +83,60 @@ namespace UniversityIT.DataAccess.Repositories.FileStructure
 
         //    return result;
         //}
+        public async Task<FolderWithChilds> GetFolderWithAllLevelChilds(int id)
+        {
+            var folderEntity = await _context.Folders
+                .AsNoTracking()
+                .FirstOrDefaultAsync(fr => fr.Id == id);
+
+            if (folderEntity != null)
+            {
+                var folder = FolderWithChilds.Create(
+                    folderEntity.Id,
+                    folderEntity.Name,
+                    folderEntity.ParentId,
+                    folderEntity.ParentPath
+                ).Value;
+
+                var allLevelChildsFolders = await _context.Folders
+                    .AsNoTracking()
+                    .Where(fl => fl.ParentPath.StartsWith(folderEntity.ParentPath) && fl.ParentPath != folderEntity.ParentPath)
+                    .OrderBy(fl => fl.Name)
+                    .ToListAsync();
+
+                foreach (var child in allLevelChildsFolders)
+                {
+                    folder.Childs.Add(DataBaseMappings.FileStructureDtoFromFolderEntity(child));
+                }
+
+                var allLevelChildsFiles = await _context.Files
+                    .AsNoTracking()
+                    .Where(fl => fl.ParentPath.StartsWith(folderEntity.ParentPath))
+                    .OrderBy(fl => fl.Name)
+                    .ToListAsync();
+
+                foreach (var child in allLevelChildsFiles)
+                {
+                    folder.Childs.Add(DataBaseMappings.FileStructureDtoFromFileEntity(child));
+                }
+
+                return folder;
+            }
+            else
+            {
+                throw new Exception();
+            }
+        }
 
         public async Task<List<FileDto>> GetAllLevelChildsFiles(int id)
         {
-            var folder = await _context.Folders
+            var folderEntity = await _context.Folders
                 .AsNoTracking()
                 .FirstOrDefaultAsync(fr => fr.Id == id) ?? throw new Exception();
 
             var allLevelChildsFiles = await _context.Files
                 .AsNoTracking()
-                .Where(fl => fl.ParentPath.StartsWith(folder.ParentPath))
+                .Where(fl => fl.ParentPath.StartsWith(folderEntity.ParentPath))
                 .OrderBy(fl => fl.Name)
                 .ToListAsync();
 
@@ -134,6 +179,18 @@ namespace UniversityIT.DataAccess.Repositories.FileStructure
             }
 
             return parentPath;
+        }
+
+        public async Task<int> DownloadFolder(int id)
+        {
+            string parentPath = await GetParentPath(id);
+
+            var childs = await _context.Folders
+                .AsNoTracking()
+                .Where(f => f.ParentPath.StartsWith("ddd"))
+                .ToListAsync();
+
+            return id;
         }
     }
 }

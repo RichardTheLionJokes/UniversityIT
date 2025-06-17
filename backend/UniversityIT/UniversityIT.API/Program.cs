@@ -36,6 +36,7 @@ services.Configure<TelegramOptions>(configuration.GetSection("UniversityIT").Get
 services.Configure<JwtOptions>(configuration.GetSection("UniversityIT").GetSection(nameof(JwtOptions)));
 services.Configure<AuthorizationOptions>(configuration.GetSection("UniversityIT").GetSection(nameof(AuthorizationOptions)));
 services.Configure<PasswordPolicyOptions>(configuration.GetSection("UniversityIT").GetSection(nameof(PasswordPolicyOptions)));
+services.Configure<StaticFilesOptions>(configuration.GetSection("UniversityIT").GetSection(nameof(StaticFilesOptions)));
 
 services.AddApiAuthentication(configuration);
 

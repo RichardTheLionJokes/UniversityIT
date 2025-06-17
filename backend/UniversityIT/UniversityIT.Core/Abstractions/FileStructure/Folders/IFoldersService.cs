@@ -9,5 +9,6 @@ namespace UniversityIT.Core.Abstractions.FileStructure.Folders
         //Task<List<FileStructureDto>> GetFolderChilds(int folderId);
         Task<int> UpdateFolder(int id, string name);
         Task<int> DeleteFolder(int id);
+        Task<(byte[], string)> DownloadFolder(int id);
     }
 }

@@ -4,7 +4,7 @@ import Title from "antd/es/typography/Title";
 import Button from "antd/es/button/button";
 import { useEffect, useState } from "react";
 import { FileStructures } from "../components/documents/FileStructures";
-import { createFolder, deleteFolder, FolderRequest, getFolderWithChilds, updateFolder } from "../services/documents/folders";
+import { createFolder, deleteFolder, FolderRequest, getFolderDownloadRef, getFolderWithChilds, updateFolder } from "../services/documents/folders";
 import { CreateUpdateFolder, Mode } from "../components/documents/CreateUpdateFolder";
 import { deleteFile, FileRequest, getFileDownloadRef, updateFile, uploadFile } from "../services/documents/files";
 import { useSearchParams } from "next/navigation";
@@ -60,10 +60,10 @@ export default function DocumentsPage() {
     
     const getDownloadRef = (id: number, isFolder: boolean) => {
         if (isFolder) {
-            return "";
+            return getFolderDownloadRef(id);
         }
         else {
-            return getFileDownloadRef(id);"";
+            return getFileDownloadRef(id);
         }
     };
     

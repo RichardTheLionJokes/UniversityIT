@@ -20,9 +20,9 @@ namespace UniversityIT.Application.Services.FileStructure
             _fileManagementService = fileManagementService;
         }
 
-        public async Task<Result<int>> CreateFile(IFormFile doc, FileDto file, string folderPath)
+        public async Task<Result<int>> CreateFile(IFormFile doc, FileDto file)
         {
-            var fileRefValue = await _fileManagementService.SaveFile(doc, folderPath);
+            var fileRefValue = await _fileManagementService.SaveFile(doc);
             if (fileRefValue.IsFailure)
                 return Result.Failure<int>(fileRefValue.Error);
 
@@ -44,7 +44,7 @@ namespace UniversityIT.Application.Services.FileStructure
             return (fileContent, contentType, file.Name + (String.IsNullOrEmpty(extension) ? "" : extension));
         }
 
-        private async Task<FileDto> GetFileById(int id)
+        public async Task<FileDto> GetFileById(int id)
         {
             return await _filesRepository.GetById(id);
         }

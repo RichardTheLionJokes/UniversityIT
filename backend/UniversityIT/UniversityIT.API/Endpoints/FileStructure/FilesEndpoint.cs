@@ -11,9 +11,6 @@ namespace UniversityIT.API.Endpoints.FileStructure
 {
     public static class FilesEndpoint
     {
-        private static readonly string _staticFilesPath =
-            Path.Combine(new string[] {Directory.GetCurrentDirectory(), "StaticFiles", "Documents"});
-
         public static IEndpointRouteBuilder MapFilesEndpoints(this IEndpointRouteBuilder app)
         {
             var endpoints = app.MapGroup("files")
@@ -47,7 +44,7 @@ namespace UniversityIT.API.Endpoints.FileStructure
                     ""
                     );
 
-                var fileId = await filesService.CreateFile(request.Files[0], file.Value, _staticFilesPath);
+                var fileId = await filesService.CreateFile(request.Files[0], file.Value);
 
                 return Results.Ok(fileId.Value);
             }

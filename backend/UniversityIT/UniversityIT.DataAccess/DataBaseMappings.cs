@@ -170,7 +170,9 @@ namespace UniversityIT.DataAccess
                 folderEntity.Name,
                 "",
                 true,
-                folderEntity.ParentId)
+                "",
+                folderEntity.ParentId,
+                folderEntity.ParentPath)
                 .Value;
         }
 
@@ -183,7 +185,9 @@ namespace UniversityIT.DataAccess
                 fileEntity.Name,
                 extension,
                 false,
-                fileEntity.ParentId)
+                fileEntity.FileRefValue,
+                fileEntity.ParentId,
+                fileEntity.ParentPath)
                 .Value;
         }
     }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Net.Http.Headers;
 using UniversityIT.API.Contracts.FileStructure.Folders;
 using UniversityIT.API.Extentions;
 using UniversityIT.Core.Abstractions.FileStructure.Folders;
@@ -23,6 +24,8 @@ namespace UniversityIT.API.Endpoints.FileStructure
 
             endpoints.MapDelete("{id:int}", DeleteFolder).RequirePermissions(Permission.Delete);
 
+            endpoints.MapGet("download/{id:int}", DownloadFolder).RequirePermissions(Permission.Read);
+
             return endpoints;
         }
 
@@ -44,7 +47,8 @@ namespace UniversityIT.API.Endpoints.FileStructure
 
         private static async Task<IResult> GetFolderWithChilds(int id, IFoldersService foldersService)
         {
-            var folder = await foldersService.GetFolderWithChilds(id);
+            var folderWithChilds = await foldersService.GetFolderWithChilds(id);
+            var folder = folderWithChilds.Folder;
 
             var response = new FoldersWithChildsResponse(
                 folder.Id,
@@ -52,7 +56,7 @@ namespace UniversityIT.API.Endpoints.FileStructure
                 folder.ParentId,
             new List<FileStructuresResponse>());
 
-            foreach (var child in folder.Childs)
+            foreach (var child in folderWithChilds.Childs)
             {
                 response.Childs.Add(new FileStructuresResponse(
                     child.Id,
@@ -77,6 +81,21 @@ namespace UniversityIT.API.Endpoints.FileStructure
         private static async Task<IResult> DeleteFolder(int id, IFoldersService foldersService)
         {
             return Results.Ok(await foldersService.DeleteFolder(id));
+        }
+
+        private static async Task<IResult> DownloadFolder(int id, IFoldersService foldersService, HttpContext context)
+        {
+            var (zipContent, fileName) = await foldersService.DownloadFolder(id);
+
+            string contentDisposition = "inline";
+
+            var contentDispositionHeader = new ContentDispositionHeaderValue(contentDisposition)
+            {
+                FileName = fileName
+            };
+            context.Response.Headers.ContentDisposition = contentDispositionHeader.ToString();
+
+            return Results.File(zipContent, contentDisposition);
         }
     }
 }

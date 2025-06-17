@@ -54,7 +54,10 @@ export const ServEvents = ({ servEvents }: Props) => {
     
     return(
         <div>
-            <Table dataSource={dataSource} columns={columns} />;
+            <Table
+                columns={columns}
+                dataSource={dataSource}
+            />;
         </div>
     )
 }

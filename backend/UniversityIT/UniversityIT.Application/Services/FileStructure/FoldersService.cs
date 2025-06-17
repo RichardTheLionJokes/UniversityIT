@@ -1,4 +1,6 @@
-﻿using UniversityIT.Core.Abstractions.FileStructure.Files;
+﻿using System.IO.Compression;
+using UniversityIT.Application.Abstractions.FileStructure;
+using UniversityIT.Core.Abstractions.FileStructure.Files;
 using UniversityIT.Core.Abstractions.FileStructure.Folders;
 using UniversityIT.Core.Models.FileStructure;
 
@@ -8,11 +10,13 @@ namespace UniversityIT.Application.Services.FileStructure
     {
         private readonly IFoldersRepository _foldersRepository;
         private readonly IFilesService _filesService;
+        private readonly IFileManagementService _fileManagementService;
 
-        public FoldersService(IFoldersRepository foldersRepository, IFilesService filesService)
+        public FoldersService(IFoldersRepository foldersRepository, IFilesService filesService, IFileManagementService fileManagementService)
         {
             _foldersRepository = foldersRepository;
             _filesService = filesService;
+            _fileManagementService = fileManagementService;
         }
 
         public async Task<int> CreateFolder(FolderDto folder)
@@ -46,6 +50,15 @@ namespace UniversityIT.Application.Services.FileStructure
             }
 
             return await _foldersRepository.Delete(id);
+        }
+
+        public async Task<(byte[], string)> DownloadFolder(int id)
+        {
+            var folderWithChilds = await _foldersRepository.GetFolderWithAllLevelChilds(id);
+
+            var fileContent = await _fileManagementService.ArchiveFolder(folderWithChilds);
+
+            return (fileContent.Value, folderWithChilds.Folder.Name + ".zip");
         }
     }
 }
